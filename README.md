@@ -11,7 +11,6 @@
 | 构建 | AGP 9.4.1，Gradle Version Catalog，Java 17 |
 | SDK 范围 | minSdk 34 / targetSdk 37 / compileSdk 37 |
 | SDK | `com.hihonor.mcs:smartgripkit:1.0.0.300` |
-<!-- | 版本 | 1.0.1 | -->
 | 许可证 | [MIT](./LICENSE) |
 
 ## 功能
@@ -104,14 +103,6 @@ app/src/main/res/
 
 架构与任务规划详见 [AGENTS.md](AGENTS.md)。
 
-## 截图
+## 开源协议
 
-| 主页 | 模拟 | 设置 |
-|---|---|---|
-| _待真机验证后补充_ | _待补充_ | _待补充_ |
-
-## 作者
-
-- anjisuan608
-- 仓库：[GitHub](https://github.com/anjisuan608/AI-FreeGrip)
-- 许可证：[MIT](https://github.com/anjisuan608/AI-FreeGrip/blob/main/LICENSE)
+本程序在 MIT 开源协议下发布，项目中的所有文档和媒体(包括但不限于图片、视频、音频)使用 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.zh-hans) 协议授权使用。
