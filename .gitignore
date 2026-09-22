@@ -1,0 +1,75 @@
+# ============================================
+# Gradle
+# ============================================
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+
+# Kotlin 增量/编译缓存
+.kotlin/
+
+# ============================================
+# Android 构建产物与本地配置
+# ============================================
+local.properties
+*.apk
+*.aab
+*.ap_
+*.aar
+*.hprof
+captures/
+.externalNativeBuild
+.cxx
+lint/intermediates/
+lint/tmp/
+lint/reports/
+
+# Android Studio 生成的日志/分析文件
+*.hprof.xml
+nativeDebugUnitTest.zip
+output-metadata.json
+
+# ============================================
+# 签名与敏感信息（切勿提交）
+# ============================================
+*.jks
+*.keystore
+keystore.properties
+secrets.properties
+
+# ============================================
+# IDE：Android Studio / IntelliJ IDEA
+# （配置可由团队成员本地重新生成）
+*.iml
+*.ipr
+*.iws
+.idea/
+*.hprof
+
+# VS Code（如使用）
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# ============================================
+# 系统文件
+# ============================================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*~
+
+# ============================================
+# 其他杂项
+# ============================================
+*.log
+*.tmp
+*.bak
+*.swp
+.lock-tmp
+.vscode/
+tmp/
+temp/
