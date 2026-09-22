@@ -1,3 +1,84 @@
 <resources>
     <string name="app_name">AI-Freegrip</string>
+
+    <!-- 握持状态（5 种，取值见 AGENTS.md 2.2） -->
+    <string name="grip_state_not_held">未握持</string>
+    <string name="grip_state_left_hand">左手握持</string>
+    <string name="grip_state_right_hand">右手握持</string>
+    <string name="grip_state_both_hands">双手握持</string>
+    <string name="grip_state_unknown">未识别</string>
+
+    <!-- 模拟器用短标签，避免 5 个分段按钮在窄屏溢出 -->
+    <string name="grip_sim_not_held">未握</string>
+    <string name="grip_sim_left">左手</string>
+    <string name="grip_sim_right">右手</string>
+    <string name="grip_sim_both">双手</string>
+    <string name="grip_sim_unknown">未知</string>
+
+    <!-- 设备支持状态（错误码 0~4）：标题与引导文案措辞对齐官方「处理建议」，见 AGENTS.md 2.3 -->
+    <string name="grip_status_supported">设备支持 AI 随心握</string>
+    <string name="grip_status_supported_guide">可注册握持监听器，握姿变化将实时驱动下方演示布局。</string>
+    <string name="grip_status_not_support">设备不支持</string>
+    <string name="grip_status_not_support_guide">当前设备不支持 AI 随心握，演示功能入口已隐藏。可参阅官方「支持的设备列表」确认机型。</string>
+    <string name="grip_status_setting_off">功能开关已关闭</string>
+    <string name="grip_status_setting_off_guide">请前往：设置 &gt; 智能辅助 &gt; AI 随心握，开启后返回本应用重新检测。</string>
+    <string name="grip_status_no_permission">缺少权限</string>
+    <string name="grip_status_no_permission_guide">请前往：设置 &gt; 隐私和安全 &gt; 权限管理 &gt; 设备动作与方向，将本应用设为「允许」后重新检测。</string>
+    <string name="grip_status_other_error">注册失败（其他错误）</string>
+    <string name="grip_status_other_error_guide">请检查 Context 是否为空、系统服务是否可用，详见官方 FAQ。</string>
+
+    <!-- 主界面 -->
+    <string name="main_title">AI 随心握演示</string>
+    <string name="action_compliance">合规说明</string>
+    <string name="action_back">返回</string>
+    <string name="action_recheck">尝试重新检测</string>
+    <string name="action_open_settings">打开设置</string>
+    <string name="label_current_grip">当前握姿</string>
+    <string name="label_registered_on">监听已注册</string>
+    <string name="label_registered_off">监听未注册</string>
+
+    <!-- 演示区（模拟真实业务界面） -->
+    <string name="demo_screen_title">商品详情 · 演示</string>
+    <string name="demo_card_title">推荐内容 %1$d</string>
+    <string name="demo_card_body">这一段是模拟的真实业务内容；下方操作区会根据握姿自动靠左、靠右或对称排布。</string>
+    <string name="demo_action_label">操作区（随握姿自适应）</string>
+    <string name="cta_primary">立即下单</string>
+    <string name="cta_secondary">加入收藏</string>
+
+    <!-- 各握姿下的布局说明，便于演示时口头讲解 -->
+    <string name="layout_hint_not_held">未握持：操作区居中对称</string>
+    <string name="layout_hint_left">左手握持：交互入口靠左</string>
+    <string name="layout_hint_right">右手握持：交互入口靠右</string>
+    <string name="layout_hint_both">双手握持：两端对称分布</string>
+    <string name="layout_hint_unknown">未识别：保持当前或恢复默认</string>
+
+    <!-- 演示模拟器 -->
+    <string name="simulator_title">演示模拟器</string>
+    <string name="simulator_hint">非荣耀设备或无握持输入时，可手动预览各握姿下的布局。</string>
+    <string name="simulator_follow_real">跟随真实</string>
+    <string name="simulator_simulating">模拟中：%1$s（点「跟随真实」恢复）</string>
+
+    <!-- 设备不支持时按官方要求隐藏功能入口 -->
+    <string name="entry_hidden_title">功能入口已隐藏</string>
+    <string name="entry_hidden_desc">按官方建议：设备不支持时隐藏演示功能入口。</string>
+
+    <string name="footer_text">AI FreeGrip · 荣耀终端股份有限公司</string>
+
+    <!-- 合规披露页（字段与措辞抄自官方《SDK 合规使用说明》，见 AGENTS.md 第 3 节） -->
+    <string name="compliance_title">合规披露</string>
+    <string name="compliance_intro">本应用集成了荣耀 AI 随心握（AI FreeGrip）服务。依据官方《SDK 合规使用说明》，向您披露如下信息：</string>
+    <string name="label_company">第三方公司名称</string>
+    <string name="value_company">荣耀终端股份有限公司</string>
+    <string name="label_sdk_name">第三方 SDK 名称</string>
+    <string name="value_sdk_name">AI FreeGrip</string>
+    <string name="label_purpose">SDK 使用目的</string>
+    <string name="value_purpose">给三方应用提供荣耀 AI 随心握（握姿检测）开放能力</string>
+    <string name="label_scene">SDK 使用场景</string>
+    <string name="value_scene">应用可根据用户握姿（左手/右手/双手/未握持）调整 UI 布局、交互入口位置等</string>
+    <string name="label_personal_info">处理的个人信息类型</string>
+    <string name="label_permission">实现 SDK 产品功能所需的权限</string>
+    <string name="label_privacy_link">SDK 隐私声明链接</string>
+    <string name="value_not_involved">不涉及</string>
+    <string name="compliance_sdk_version">当前 SDK 版本：com.hihonor.mcs:smartgripkit 1.0.0.300</string>
+    <string name="compliance_note">说明：本演示程序仅在本地把握姿映射为布局变化，不收集、不上传任何个人信息，也未实现自启动/关联启动。</string>
 </resources>
