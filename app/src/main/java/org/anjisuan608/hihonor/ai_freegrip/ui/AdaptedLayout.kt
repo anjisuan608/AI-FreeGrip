@@ -132,9 +132,9 @@ private fun ActionRow(grip: GripState) {
     }
 }
 
-/** 当前握姿对应的布局说明文案。 */
+/** 当前握姿对应的布局说明文案（主页与模拟页共用，同包 internal）。 */
 @Composable
-private fun layoutHint(grip: GripState): String = when (grip) {
+internal fun layoutHint(grip: GripState): String = when (grip) {
     GripState.NotHeld -> stringResource(R.string.layout_hint_not_held)
     GripState.LeftHand -> stringResource(R.string.layout_hint_left)
     GripState.RightHand -> stringResource(R.string.layout_hint_right)

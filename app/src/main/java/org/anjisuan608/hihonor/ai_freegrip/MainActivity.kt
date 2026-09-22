@@ -8,28 +8,45 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import org.anjisuan608.hihonor.ai_freegrip.grip.GripState
 import org.anjisuan608.hihonor.ai_freegrip.grip.GripSupportStatus
 import org.anjisuan608.hihonor.ai_freegrip.grip.SmartGripRepository
-import org.anjisuan608.hihonor.ai_freegrip.ui.ComplianceScreen
+import org.anjisuan608.hihonor.ai_freegrip.ui.AboutScreen
+import org.anjisuan608.hihonor.ai_freegrip.ui.AppPage
 import org.anjisuan608.hihonor.ai_freegrip.ui.GripUiState
 import org.anjisuan608.hihonor.ai_freegrip.ui.MainScreen
+import org.anjisuan608.hihonor.ai_freegrip.ui.SimulatorScreen
 import org.anjisuan608.hihonor.ai_freegrip.ui.theme.AIFreegripTheme
 
 /**
- * 生命周期接线（官方 2.4）：
- * `onCreate` 查询支持状态 → `onResume` 注册 → `onPause` 解注册。
+ * 单 Activity 三页面：
+ * - 生命周期接线（官方 2.4）：`onCreate` 查询支持状态 → `onResume` 注册 → `onPause` 解注册；
+ * - 页面切换：外层 [Scaffold] 统一持有 TopAppBar + 底部导航，内容区按 [AppPage] 切换
+ *   （页面内不再各自套 Scaffold，避免嵌套 Scaffold 的 inset 双重填充）。
  *
- * UI 状态只有一处源头 [uiState]；SDK 回调与模拟器都只改它，Compose 自动重组。
+ * UI 状态只有两处源头：[uiState] 与 [currentPage]；SDK 回调与模拟器只改状态，Compose 自动重组。
  */
 class MainActivity : ComponentActivity() {
 
     private lateinit var gripRepository: SmartGripRepository
 
     private var uiState by mutableStateOf(GripUiState())
-    private var showCompliance by mutableStateOf(false)
+    private var currentPage by mutableStateOf(AppPage.Home)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,20 +58,20 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             AIFreegripTheme {
-                // 单 Activity 两屏，不用导航库（AGENTS.md 第 4 节）
-                BackHandler(enabled = showCompliance) { showCompliance = false }
-
-                if (showCompliance) {
-                    ComplianceScreen(onBack = { showCompliance = false })
-                } else {
-                    MainScreen(
-                        state = uiState,
-                        onRecheck = ::recheckSupport,
-                        onOpenSettings = ::openSystemSettings,
-                        onSimulate = { simulated -> uiState = uiState.copy(simulatedGrip = simulated) },
-                        onOpenCompliance = { showCompliance = true },
-                    )
+                // 返回键：模拟/关于页 → 回主页；主页保留系统默认行为
+                BackHandler(enabled = currentPage != AppPage.Home) {
+                    currentPage = AppPage.Home
                 }
+                AppScaffold(
+                    page = currentPage,
+                    state = uiState,
+                    onPageChange = { currentPage = it },
+                    onRecheck = ::recheckSupport,
+                    onOpenSettings = ::openSystemSettings,
+                    onSimulate = { simulated ->
+                        uiState = uiState.copy(simulatedGrip = simulated)
+                    },
+                )
             }
         }
     }
@@ -70,6 +87,57 @@ class MainActivity : ComponentActivity() {
         gripRepository.unregister()
         uiState = uiState.copy(registered = false)
         super.onPause()
+    }
+
+    /** 外层脚手架：顶栏（标题随页面变）+ 底部三选一导航 + 内容区。 */
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    private fun AppScaffold(
+        page: AppPage,
+        state: GripUiState,
+        onPageChange: (AppPage) -> Unit,
+        onRecheck: () -> Unit,
+        onOpenSettings: () -> Unit,
+        onSimulate: (GripState?) -> Unit,
+    ) {
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            topBar = {
+                TopAppBar(title = { Text(stringResource(page.titleRes)) })
+            },
+            bottomBar = {
+                NavigationBar {
+                    AppPage.entries.forEach { item ->
+                        NavigationBarItem(
+                            selected = page == item,
+                            onClick = { onPageChange(item) },
+                            icon = { Icon(item.icon, contentDescription = null) },
+                            label = { Text(stringResource(item.labelRes)) },
+                            alwaysShowLabel = true,
+                        )
+                    }
+                }
+            },
+        ) { innerPadding ->
+            when (page) {
+                AppPage.Home -> MainScreen(
+                    state = state,
+                    onRecheck = onRecheck,
+                    onOpenSettings = onOpenSettings,
+                    modifier = Modifier.padding(innerPadding),
+                )
+
+                AppPage.Simulator -> SimulatorScreen(
+                    state = state,
+                    onSimulate = onSimulate,
+                    modifier = Modifier.padding(innerPadding),
+                )
+
+                AppPage.About -> AboutScreen(
+                    modifier = Modifier.padding(innerPadding),
+                )
+            }
+        }
     }
 
     /** 「尝试重新检测」：重新查询支持状态，若恢复支持则立即补注册。 */

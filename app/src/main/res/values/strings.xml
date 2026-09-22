@@ -29,8 +29,13 @@
 
     <!-- 主界面 -->
     <string name="main_title">AI 随心握演示</string>
-    <string name="action_compliance">合规说明</string>
-    <string name="action_back">返回</string>
+    <!-- 底部导航（主页/模拟/关于 三页面） -->
+    <string name="nav_home">主页</string>
+    <string name="nav_simulator">模拟</string>
+    <string name="nav_about">关于</string>
+    <string name="sim_page_title">演示模拟</string>
+    <string name="about_title">关于与合规</string>
+    <string name="expected_section_title">预期行为演示区</string>
     <string name="action_recheck">尝试重新检测</string>
     <string name="action_open_settings">打开设置</string>
     <string name="label_current_grip">当前握姿</string>
@@ -63,6 +68,17 @@
     <string name="entry_hidden_desc">按官方建议：设备不支持时隐藏演示功能入口。</string>
 
     <string name="footer_text">AI FreeGrip · 荣耀终端股份有限公司</string>
+
+    <!-- 关于页：SDK 链接与开源信息 -->
+    <string name="about_section_links">SDK 相关链接</string>
+    <string name="about_link_sdk_doc">HONOR AI FreeGrip 开发者文档</string>
+    <string name="about_section_open_source">开源信息</string>
+    <string name="about_label_author">作者</string>
+    <string name="about_value_author">anjisuan608</string>
+    <string name="about_label_license">许可证</string>
+    <string name="about_value_license">MIT</string>
+    <string name="about_label_repo">GitHub 仓库</string>
+    <string name="about_value_repo">github.com/anjisuan608/AI-Freegrip</string>
 
     <!-- 合规披露页（字段与措辞抄自官方《SDK 合规使用说明》，见 AGENTS.md 第 3 节） -->
     <string name="compliance_title">合规披露</string>

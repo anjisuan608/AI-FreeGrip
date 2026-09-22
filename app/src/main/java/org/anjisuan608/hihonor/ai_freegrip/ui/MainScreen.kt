@@ -7,11 +7,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,68 +41,41 @@ data class GripUiState(
 }
 
 /**
- * 演示主页：状态卡片 + 随握姿重排的演示区 + 模拟器 + 合规入口。
+ * 主页：设备支持模块（[GripStatusCard]）+ 演示模块（[AdaptedLayout]）。
+ * 顶栏与底部导航由 MainActivity 的外层 Scaffold 统一提供，本组件只负责内容。
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
     state: GripUiState,
     onRecheck: () -> Unit,
     onOpenSettings: () -> Unit,
-    onSimulate: (GripState?) -> Unit,
-    onOpenCompliance: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Scaffold(
-        modifier = modifier.fillMaxSize(),
-        topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.main_title)) },
-                actions = {
-                    TextButton(onClick = onOpenCompliance) {
-                        Text(stringResource(R.string.action_compliance))
-                    }
-                },
-            )
-        },
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp, vertical = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            GripStatusCard(
-                support = state.support,
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        // 设备支持模块
+        GripStatusCard(
+            support = state.support,
+            grip = state.effectiveGrip,
+            registered = state.registered,
+            onRecheck = onRecheck,
+            onOpenSettings = onOpenSettings,
+            modifier = Modifier.fillMaxWidth(),
+        )
+
+        // 演示模块：设备不支持时按官方要求隐藏功能入口
+        if (state.support == GripSupportStatus.NotSupported) {
+            HiddenEntry(modifier = Modifier.fillMaxWidth())
+        } else {
+            AdaptedLayout(
                 grip = state.effectiveGrip,
-                registered = state.registered,
-                onRecheck = onRecheck,
-                onOpenSettings = onOpenSettings,
                 modifier = Modifier.fillMaxWidth(),
-            )
-
-            if (state.support == GripSupportStatus.NotSupported) {
-                // 官方处理建议：设备不支持时隐藏功能入口
-                HiddenEntry(modifier = Modifier.fillMaxWidth())
-            } else {
-                AdaptedLayout(
-                    grip = state.effectiveGrip,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            }
-
-            SimulatorCard(
-                current = state.simulatedGrip,
-                onSimulate = onSimulate,
-                modifier = Modifier.fillMaxWidth(),
-            )
-
-            Text(
-                text = stringResource(R.string.footer_text),
-                style = androidx.compose.material3.MaterialTheme.typography.labelSmall,
-                color = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
     }
@@ -113,17 +84,20 @@ fun MainScreen(
 /** 设备不支持时的占位说明（功能入口本体已隐藏）。 */
 @Composable
 private fun HiddenEntry(modifier: Modifier = Modifier) {
-    androidx.compose.material3.Card(modifier = modifier) {
+    Card(modifier = modifier) {
         Column(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text(stringResource(R.string.entry_hidden_title), style = androidx.compose.material3.MaterialTheme.typography.titleSmall)
+            Text(
+                stringResource(R.string.entry_hidden_title),
+                style = MaterialTheme.typography.titleSmall,
+            )
             Text(
                 stringResource(R.string.entry_hidden_desc),
-                style = androidx.compose.material3.MaterialTheme.typography.bodySmall,
-                color = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
     }
@@ -133,7 +107,7 @@ private fun HiddenEntry(modifier: Modifier = Modifier) {
 // 预览：主界面整体效果
 // ---------------------------------------------------------------------------
 
-@Preview(showBackground = true, name = "主界面 · 支持 + 右手握持")
+@Preview(showBackground = true, name = "主页 · 支持 + 右手握持")
 @Composable
 private fun MainScreenSupportedPreview() {
     AIFreegripTheme {
@@ -145,13 +119,11 @@ private fun MainScreenSupportedPreview() {
             ),
             onRecheck = {},
             onOpenSettings = {},
-            onSimulate = {},
-            onOpenCompliance = {},
         )
     }
 }
 
-@Preview(showBackground = true, name = "主界面 · 开关关闭（带引导）")
+@Preview(showBackground = true, name = "主页 · 开关关闭（带引导）")
 @Composable
 private fun MainScreenSettingOffPreview() {
     AIFreegripTheme {
@@ -159,13 +131,11 @@ private fun MainScreenSettingOffPreview() {
             state = GripUiState(support = GripSupportStatus.SettingOff),
             onRecheck = {},
             onOpenSettings = {},
-            onSimulate = {},
-            onOpenCompliance = {},
         )
     }
 }
 
-@Preview(showBackground = true, name = "主界面 · 设备不支持（隐藏入口）")
+@Preview(showBackground = true, name = "主页 · 设备不支持（隐藏入口）")
 @Composable
 private fun MainScreenNotSupportedPreview() {
     AIFreegripTheme {
@@ -173,8 +143,6 @@ private fun MainScreenNotSupportedPreview() {
             state = GripUiState(support = GripSupportStatus.NotSupported),
             onRecheck = {},
             onOpenSettings = {},
-            onSimulate = {},
-            onOpenCompliance = {},
         )
     }
 }
