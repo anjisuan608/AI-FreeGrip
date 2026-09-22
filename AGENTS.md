@@ -129,13 +129,19 @@ grip/
   GripSupportStatus.kt    # 支持状态枚举 + 错误码 → 文案/引导动作 的映射
   SmartGripRepository.kt  # 对 SmartGripEventManager 的唯一封装（SDK 交互出口，便于测试替身）
 ui/
-  MainScreen.kt           # 主演示界面：状态卡片 + 随握姿切换的布局
+  AppPage.kt              # 三页面枚举（主页/模拟/关于）：导航 label、顶栏标题、底部图标
+  MainScreen.kt           # 主页：GripUiState + 设备支持模块 + 演示模块（含 GripUiState 定义）
   GripStatusCard.kt       # 展示当前支持状态/握持状态/错误引导
   AdaptedLayout.kt        # 根据 GripState 重排的演示布局（居中/靠左/靠右/对称）
-  ComplianceScreen.kt     # 合规披露页：展示第 3 节要求的披露字段
-MainActivity.kt           # 生命周期接线（onCreate/onResume/onPause），setContent
+  SimulatorScreen.kt      # 模拟页：演示模拟器 + 预期行为演示区（复用 AdaptedLayout）
+  AboutScreen.kt          # 关于页：合规披露 7 字段 + HONOR 开发者链接 + 作者/MIT/仓库
+MainActivity.kt           # 生命周期接线 + 外层 Scaffold（顶栏 + 底部导航）+ 页面切换
 ui/theme/                 # 沿用模板主题，不引入第三方主题库
 ```
+
+导航约定：单 Activity 三页面，`AppPage` 枚举 + `mutableStateOf` 切换，**不引入导航库**；
+外层 `Scaffold` 统一持有 TopAppBar 与底部 `NavigationBar`，页面内容组件不再各自套 Scaffold（避免嵌套 inset 双重填充）。
+外跳链接一律 `LocalUriHandler.openUri` 交给系统浏览器，**不新增 manifest 权限**。
 
 设计约定：
 
