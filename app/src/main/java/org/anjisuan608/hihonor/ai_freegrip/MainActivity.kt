@@ -86,6 +86,9 @@ class MainActivity : ComponentActivity() {
         // 官方要求：onCreate 查询设备支持状态
         uiState = uiState.copy(support = gripRepository.querySupportState())
 
+        // App Shortcuts / 深链入口：aifreegrip://page/{home|simulator|settings|about}
+        applyShortcutRoute(intent)
+
         setContent {
             AIFreegripTheme(
                 darkTheme = darkMode.resolvesToDark(isSystemInDarkTheme()),
@@ -133,6 +136,39 @@ class MainActivity : ComponentActivity() {
         gripRepository.unregister()
         uiState = uiState.copy(registered = false)
         super.onPause()
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        // 应用已在前台时点 shortcut：intent 可能走 onNewIntent 而非新建实例
+        applyShortcutRoute(intent)
+    }
+
+    /**
+     * 解析 App Shortcuts 的深链入口 `aifreegrip://page/{id}` 并切换页面。
+     * 「关于」是设置的子页：路由到设置页后叠加显示（与从设置列表点入一致）。
+     * 未知/空 data 保持当前页面（默认主页），静默忽略。
+     */
+    private fun applyShortcutRoute(intent: Intent?) {
+        when (intent?.data?.lastPathSegment) {
+            "home" -> {
+                currentPage = AppPage.Home
+                showAbout = false
+            }
+            "simulator" -> {
+                currentPage = AppPage.Simulator
+                showAbout = false
+            }
+            "settings" -> {
+                currentPage = AppPage.Settings
+                showAbout = false
+            }
+            "about" -> {
+                currentPage = AppPage.Settings
+                showAbout = true
+            }
+        }
     }
 
     /** 外层脚手架：顶栏（标题随页面变）+ 底部三选一导航 + 内容区。 */

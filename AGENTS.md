@@ -145,6 +145,9 @@ ui/theme/                 # 沿用模板主题，不引入第三方主题库
 「关于」是设置页里的一个入口项，点开后作为**设置的子页面**叠加显示（顶栏换返回箭头、隐藏底部导航，返回键先回设置页）。
 返回处理走 `BackHandler`（OnBackPressedDispatcher），manifest 已开 `enableOnBackInvokedCallback` 适配**预测性返回**：
 子页/非主页拦截返回时为应用内回退，主页不拦截、交系统播放返回跟手动画后退出。
+**App Shortcuts**：静态四入口（主页/模拟/设置/关于）声明于 `res/xml/shortcuts.xml`（activity 的 `android.app.shortcuts` meta-data），
+经 `aifreegrip://page/{id}` 深链路由——`MainActivity.applyShortcutRoute` 在 `onCreate`/`onNewIntent` 解析切换页面，
+「关于」路由到设置页并叠加子页；scheme 不注册 VIEW filter，外部应用无法借此启动本应用。
 外层 `Scaffold` 统一持有 TopAppBar 与底部 `NavigationBar`，页面内容组件不再各自套 Scaffold（避免嵌套 inset 双重填充）。
 外跳链接一律 `LocalUriHandler.openUri` 交给系统浏览器，**不新增 manifest 权限**。
 

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  静态 App Shortcuts：长按启动图标弹出的四个入口（主页/模拟/设置/关于）。
+  点击经 aifreegrip://page/{id} 深链路由，MainActivity 解析后切换页面；
+  静态 shortcut 的 intent 固定投递给 launcher activity，无需注册 VIEW filter
+  （也就不暴露 scheme 给外部应用，不引入任何权限）。
+  合计 static+dynamic ≤ 4：系统长按菜单的展示上限，第 4 个正好用满。
+-->
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <shortcut
+        android:shortcutId="home"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_home"
+        android:shortcutShortLabel="@string/nav_home"
+        android:shortcutLongLabel="@string/main_title">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="aifreegrip://page/home" />
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="simulator"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_simulator"
+        android:shortcutShortLabel="@string/nav_simulator">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="aifreegrip://page/simulator" />
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="settings"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_settings"
+        android:shortcutShortLabel="@string/nav_settings">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="aifreegrip://page/settings" />
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="about"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_about"
+        android:shortcutShortLabel="@string/shortcut_label_about"
+        android:shortcutLongLabel="@string/about_title">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="aifreegrip://page/about" />
+    </shortcut>
+</shortcuts>

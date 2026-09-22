@@ -34,6 +34,8 @@
     <string name="nav_simulator">Simulate</string>
     <string name="nav_about">About</string>
     <string name="nav_settings">Settings</string>
+    <!-- App Shortcuts 的短标签（长按启动图标）；长标签复用 about_title -->
+    <string name="shortcut_label_about">About</string>
     <string name="settings_title">Settings</string>
     <string name="sim_page_title">Demo simulation</string>
     <string name="about_title">About and compliance</string>
