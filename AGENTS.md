@@ -137,18 +137,24 @@ ui/
   SettingsScreen.kt       # 设置页：主题模式下拉菜单三选一 + OLED 纯黑开关 + 应用语言入口 + 关于入口
   AboutScreen.kt          # 关于子页（设置内入口打开）：合规披露 7 字段 + HONOR 开发者链接 + 作者/MIT/仓库
   theme/DarkMode.kt       # 深色三态枚举：System/Light/Dark（SharedPreferences 持久化，脏数据回退 System）
-MainActivity.kt           # 生命周期接线 + 外层 Scaffold（顶栏 + 底部导航）+ 页面切换
+MainActivity.kt           # 主活动：主体三页（AppPage 内存切换）+ launcher + Shortcuts meta-data + 深链 VIEW filter
+AboutActivity.kt          # 关于独立子活动（exported，standard 压栈：从设置入口/深链打开，返回 关于→设置→主页）
+AIFreegripApp.kt          # Application：uiState/darkMode/oledBlack/repository/prefs 唯一状态源
+BaseAppActivity.kt        # Activity 基类：AppTheme 包裹 + onResume/onPause 桥接握持监听
+ui/AppScaffold.kt          # 主活动三页共用外层脚手架（顶栏标题 + 底部导航）
 ui/theme/                 # 沿用模板主题，不引入第三方主题库
 ```
 
-导航约定：单 Activity 三页面（主页/模拟/设置），`AppPage` 枚举 + `mutableStateOf` 切换，**不引入导航库**；
-「关于」是设置页里的一个入口项，点开后作为**设置的子页面**叠加显示（顶栏换返回箭头、隐藏底部导航，返回键先回设置页）。
-返回处理走 `BackHandler`（OnBackPressedDispatcher），manifest 已开 `enableOnBackInvokedCallback` 适配**预测性返回**：
-子页/非主页拦截返回时为应用内回退，主页不拦截、交系统播放返回跟手动画后退出。
-**App Shortcuts**：静态四入口（主页/模拟/设置/关于）声明于 `res/xml/shortcuts.xml`（activity 的 `android.app.shortcuts` meta-data），
-经 `aifreegrip://page/{id}` 深链路由——`MainActivity.applyShortcutRoute` 在 `onCreate`/`onNewIntent` 解析切换页面，
-「关于」路由到设置页并叠加子页；scheme 不注册 VIEW filter，外部应用无法借此启动本应用。
-外层 `Scaffold` 统一持有 TopAppBar 与底部 `NavigationBar`，页面内容组件不再各自套 Scaffold（避免嵌套 inset 双重填充）。
+导航约定：**主体三页（主页/模拟/设置）在单一主活动 `MainActivity` 内**（`AppPage` 枚举 + `mutableStateOf` 切换，`singleTask` 防止 shortcut 反复点击堆叠实例，**不引入导航库**）；
+「关于」是**独立的 `AboutActivity`**（`exported`），从设置入口或深链 `standard` 压栈打开，顶栏返回箭头与系统返回键都 `finish()`，返回链 关于→设置→主页。
+跨界面共享的 `GripUiState`、主题设置、握持监听、偏好全部收敛在 `AIFreegripApp`（Application 唯一状态源），
+`BaseAppActivity` 在每个前台活动 `onResume` 注册 / `onPause` 解注册（同屏前台唯一，切换顺序 pause→resume 不断档，repository 幂等）。
+返回处理走 `BackHandler`（非主页 tab 先回主页，主页交系统 finish），manifest 已开 `enableOnBackInvokedCallback` 适配**预测性返回**。
+**App Shortcuts**：静态四入口（主页/模拟/设置/关于）声明于 `res/xml/shortcuts.xml`（主活动的 `android.app.shortcuts` meta-data），
+经 `aifreegrip://page/{id}` 深链路由——`MainActivity.applyShortcutRoute` 在 `onCreate`/`onNewIntent` 解析切 tab，
+「about」先切设置 tab 再压入 `AboutActivity`；⚠️ scheme 必须在主活动注册 VIEW intent-filter——
+静态 shortcut 的 intent 是隐式 `VIEW+data`，**resolve 不到会报「未找到应用」**（已修复；副作用是外部应用可借该 scheme 打开对应页面，无敏感数据、无权限）。
+主体三页外层统一由 `ui/AppScaffold.kt` 提供 TopAppBar + 底部 `NavigationBar`，页面内容组件不再各自套 Scaffold（避免嵌套 inset 双重填充）。
 外跳链接一律 `LocalUriHandler.openUri` 交给系统浏览器，**不新增 manifest 权限**。
 
 显示与语言（设置页）：
@@ -164,10 +170,10 @@ ui/theme/                 # 沿用模板主题，不引入第三方主题库
 设计约定：
 
 - **单一出口**：所有 SDK 调用只出现在 `SmartGripRepository`，UI 只依赖 `GripState`/`GripSupportStatus`，不直接 import `com.hihonor.*`。这样单元测试无需真机/SDK。
-- **状态持有**：`MainActivity` 用 `mutableStateOf` 持有 `GripState` 与支持状态；Repository 以回调暴露状态，回调内**先切主线程**（`Handler(Looper.getMainLooper())` 或 `runOnUiThread`）再更新 Compose state。
-- **注册幂等**：`onResume` 注册前判断当前支持状态为 0 且尚未注册，防止重复注册；`onPause` 解注册并置空 listener。
+- **状态持有**：`AIFreegripApp`（Application）用 `mutableStateOf` 持有 `GripUiState`（含 `GripState` 与支持状态）与主题设置，`MainActivity` 与 `AboutActivity` 观察同一实例；Repository 以回调暴露状态，回调内**先切主线程**（`Handler(Looper.getMainLooper())` 或 `runOnUiThread`）再更新 Compose state。
+- **注册幂等**：`BaseAppActivity.onResume` 注册前判断当前支持状态为 0 且尚未注册，防止重复注册；`onPause` 解注册并置空 listener（每个前台界面各接一次，前台同时只有一个）。
 - **错误可视化**：状态 1/2/3/4 分别在 `GripStatusCard` 显示对应引导文案（含 2.3 表中的设置路径，状态 2 提供「智能辅助」与「荣耀 AI & YOYO」两条路径），状态 2、3 提供「尝试重新检测」按钮，状态 4 提供「重新检测 + 重启应用」按钮。
-- **不引入** Hilt/Room/Retrofit/导航库——演示程序单 Activity + Compose 即可，避免过度设计。
+- **不引入** Hilt/Room/Retrofit/导航库——演示程序 单主活动 + 独立关于子活动 + Compose（状态收敛在 `AIFreegripApp`）即可，避免过度设计。
 
 ---
 
