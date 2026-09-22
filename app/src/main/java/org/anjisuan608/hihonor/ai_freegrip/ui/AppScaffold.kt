@@ -1,6 +1,10 @@
 package org.anjisuan608.hihonor.ai_freegrip.ui
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -14,7 +18,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import org.anjisuan608.hihonor.ai_freegrip.ui.theme.LocalOledActive
+
+/**
+ * 底栏内容行高：Material3 token 为 80dp，这里压到 64dp——
+ * icon/label 垂直居中，行矮了上下自然更贴近栏边（需求：降高度+减上下留白）。
+ */
+private val NavigationBarContentHeight = 64.dp
 
 /**
  * OLED 纯黑下底栏的区分色：微灰 #141414 与纯黑背景拉开层次，
@@ -42,7 +53,13 @@ fun AppScaffold(
             TopAppBar(title = { Text(stringResource(page.titleRes)) })
         },
         bottomBar = {
+            // NavigationBar 内部是 heightIn(min = 80dp)，外部给定精确总高
+            // （内容行 64dp + 系统手势条 inset）即可压过该下限：inset 仍由默认
+            // windowInsetsPadding 先从约束扣除，内容行最终就是 64dp
+            val bottomInset =
+                WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
             NavigationBar(
+                modifier = Modifier.height(NavigationBarContentHeight + bottomInset),
                 // OLED 纯黑时底栏换区分色，避免与纯黑内容背景融为一体；
                 // 非 OLED 维持默认 surfaceContainer 观感
                 containerColor = if (LocalOledActive.current) {
