@@ -134,7 +134,7 @@ ui/
   GripStatusCard.kt       # 展示当前支持状态/握持状态/错误引导
   AdaptedLayout.kt        # 根据 GripState 重排的演示布局（居中/靠左/靠右/对称）
   SimulatorScreen.kt      # 模拟页：演示模拟器 + 演示区「商品详情 · 模拟」（仅跟随模拟器，复用 AdaptedLayout）
-  SettingsScreen.kt       # 设置页：深色模式三选一对话框 + OLED 纯黑开关 + 应用语言入口 + 关于入口
+  SettingsScreen.kt       # 设置页：主题模式下拉菜单三选一 + OLED 纯黑开关 + 应用语言入口 + 关于入口
   AboutScreen.kt          # 关于子页（设置内入口打开）：合规披露 7 字段 + HONOR 开发者链接 + 作者/MIT/仓库
   theme/DarkMode.kt       # 深色三态枚举：System/Light/Dark（SharedPreferences 持久化，脏数据回退 System）
 MainActivity.kt           # 生命周期接线 + 外层 Scaffold（顶栏 + 底部导航）+ 页面切换
@@ -147,7 +147,7 @@ ui/theme/                 # 沿用模板主题，不引入第三方主题库
 外跳链接一律 `LocalUriHandler.openUri` 交给系统浏览器，**不新增 manifest 权限**。
 
 显示与语言（设置页）：
-- **深色模式**：Shizuku 式点开弹 AlertDialog 三选一（跟随系统/浅色/深色），**默认跟随系统**；状态存 SharedPreferences。
+- **主题模式**：设置行点开下拉菜单三选一（跟随系统/浅色/深色），**默认跟随系统**；状态存 SharedPreferences。
 - **OLED 纯黑**：仅深色模式下把背景与各层级表面覆盖为纯黑（`Theme.kt` 中 `oledBlack` 参数），默认关。
 - **应用语言**：跳 Android 原生 `Settings.ACTION_APP_LOCALE_SETTINGS`（`res/xml/locales_config.xml` 声明
   zh-CN/zh-TW/zh-HK/en-US），个别 ROM 无该页时回退 `ACTION_APPLICATION_DETAILS_SETTINGS`；均不需要 manifest 权限。
@@ -160,7 +160,7 @@ ui/theme/                 # 沿用模板主题，不引入第三方主题库
 - **单一出口**：所有 SDK 调用只出现在 `SmartGripRepository`，UI 只依赖 `GripState`/`GripSupportStatus`，不直接 import `com.hihonor.*`。这样单元测试无需真机/SDK。
 - **状态持有**：`MainActivity` 用 `mutableStateOf` 持有 `GripState` 与支持状态；Repository 以回调暴露状态，回调内**先切主线程**（`Handler(Looper.getMainLooper())` 或 `runOnUiThread`）再更新 Compose state。
 - **注册幂等**：`onResume` 注册前判断当前支持状态为 0 且尚未注册，防止重复注册；`onPause` 解注册并置空 listener。
-- **错误可视化**：状态 1/2/3/4 分别在 `GripStatusCard` 显示对应引导文案（含 2.3 表中的设置路径），状态 2、3 提供「尝试重新检测」按钮触发重新查询。
+- **错误可视化**：状态 1/2/3/4 分别在 `GripStatusCard` 显示对应引导文案（含 2.3 表中的设置路径，状态 2 提供「智能辅助」与「荣耀 AI & YOYO」两条路径），状态 2、3 提供「尝试重新检测」按钮，状态 4 提供「重新检测 + 重启应用」按钮。
 - **不引入** Hilt/Room/Retrofit/导航库——演示程序单 Activity + Compose 即可，避免过度设计。
 
 ---

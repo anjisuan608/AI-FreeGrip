@@ -105,6 +105,7 @@ class MainActivity : ComponentActivity() {
                     onCloseAbout = { showAbout = false },
                     onRecheck = ::recheckSupport,
                     onOpenSettings = ::openSystemSettings,
+                    onRestart = ::restartApp,
                     onDarkModeChange = ::applyDarkMode,
                     onOledBlackChange = ::applyOledBlack,
                     onOpenLanguageSettings = ::openAppLocaleSettings,
@@ -143,6 +144,7 @@ class MainActivity : ComponentActivity() {
         onCloseAbout: () -> Unit,
         onRecheck: () -> Unit,
         onOpenSettings: () -> Unit,
+        onRestart: () -> Unit,
         onDarkModeChange: (DarkMode) -> Unit,
         onOledBlackChange: (Boolean) -> Unit,
         onOpenLanguageSettings: () -> Unit,
@@ -194,6 +196,7 @@ class MainActivity : ComponentActivity() {
                         state = state,
                         onRecheck = onRecheck,
                         onOpenSettings = onOpenSettings,
+                        onRestart = onRestart,
                         modifier = Modifier.padding(innerPadding),
                     )
 
@@ -246,6 +249,23 @@ class MainActivity : ComponentActivity() {
     private fun applyOledBlack(enabled: Boolean) {
         oledBlack = enabled
         prefs.edit().putBoolean(KEY_OLED_BLACK, enabled).apply()
+    }
+
+    /**
+     * 重启应用（状态 4「其他错误」的自救入口）：用启动器 Intent 以
+     * `CLEAR_TASK + NEW_TASK` 重建任务栈——等效冷启动 UI，重新走一遍
+     * onCreate → 支持状态查询 → 注册流程。用户主动点击，不属于「自启动」；
+     * 不需要任何 manifest 权限。
+     */
+    private fun restartApp() {
+        runCatching {
+            val intent = packageManager.getLaunchIntentForPackage(packageName)
+                ?: error("launch intent unavailable")
+            intent.addFlags(
+                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK,
+            )
+            startActivity(intent)
+        }.onFailure { e -> Log.w(TAG, "cannot restart app", e) }
     }
 
     /**

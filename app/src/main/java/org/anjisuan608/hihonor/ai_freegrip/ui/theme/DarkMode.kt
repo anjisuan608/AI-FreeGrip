@@ -4,7 +4,7 @@ import androidx.annotation.StringRes
 import org.anjisuan608.hihonor.ai_freegrip.R
 
 /**
- * 深色模式三态（设置页以 Shizuku 式单选对话框切换）：
+ * 主题模式三态（设置页以下拉菜单切换）：
  * - [System]：跟随系统（默认）；
  * - [Light]：始终浅色；
  * - [Dark]：始终深色（与系统当前明暗无关）。

@@ -22,7 +22,7 @@
     <string name="grip_status_not_support">裝置不支援</string>
     <string name="grip_status_not_support_guide">目前裝置不支援 AI 隨心握，示範功能入口已隱藏。可參閱官方「支援的裝置列表」確認機型。</string>
     <string name="grip_status_setting_off">功能開關已關閉</string>
-    <string name="grip_status_setting_off_guide">請前往：設定 &gt; 智能輔助 &gt; AI 隨心握，開啟後返回本應用程式重新檢測。</string>
+    <string name="grip_status_setting_off_guide">請前往：設定 &gt; 智能輔助 &gt; AI 隨心握，或 設定 &gt; 榮耀 AI &amp; YOYO &gt; AI 隨心握；開啟後返回本應用程式重新檢測。</string>
     <string name="grip_status_no_permission">缺少權限</string>
     <string name="grip_status_no_permission_guide">請前往：設定 &gt; 隱私與安全 &gt; 權限管理 &gt; 裝置動作與方向，將本應用程式設為「允許」後重新檢測。</string>
     <string name="grip_status_other_error">註冊失敗（其他錯誤）</string>
@@ -40,14 +40,14 @@
     <string name="action_recheck">嘗試重新檢測</string>
     <string name="action_open_settings">開啟設定</string>
     <string name="action_back">返回</string>
-    <string name="action_cancel">取消</string>
+    <string name="action_restart">重新啟動應用程式</string>
     <string name="label_current_grip">目前握姿</string>
     <string name="label_registered_on">監聽已註冊</string>
     <string name="label_registered_off">監聽未註冊</string>
 
     <!-- 設定頁：顯示（深色三態 + OLED 純黑） -->
     <string name="settings_section_display">顯示</string>
-    <string name="settings_dark_mode_title">深色模式</string>
+    <string name="settings_dark_mode_title">主題模式</string>
     <string name="settings_dark_mode_system">跟隨系統</string>
     <string name="settings_dark_mode_light">淺色模式</string>
     <string name="settings_dark_mode_dark">深色模式</string>

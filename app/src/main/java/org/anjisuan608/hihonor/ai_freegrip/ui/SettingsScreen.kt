@@ -3,6 +3,7 @@ package org.anjisuan608.hihonor.ai_freegrip.ui
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,15 +13,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Card
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -37,7 +41,7 @@ import org.anjisuan608.hihonor.ai_freegrip.ui.theme.DarkMode
 
 /**
  * 设置页（底部第三 tab），三部分：
- * 1. 显示——深色模式（Shizuku 式点开弹三选一对话框，默认跟随系统）+ OLED 纯黑开关；
+ * 1. 显示——主题模式（下拉菜单三选一，默认跟随系统）+ OLED 纯黑开关；
  * 2. 语言——跳 Android 原生「应用语言」页（`Settings.ACTION_APP_LOCALE_SETTINGS`）；
  * 3. 关于——入口项，点开后进入关于子页面（由 MainActivity 叠加展示）。
  *
@@ -53,8 +57,8 @@ fun SettingsScreen(
     onOpenAbout: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    // 旋转屏幕时保留对话框开关（进程内状态，不落盘）
-    var showDarkModeDialog by rememberSaveable { mutableStateOf(false) }
+    // 旋转屏幕时保留下拉菜单展开状态（进程内状态，不落盘）
+    var themeMenuExpanded by rememberSaveable { mutableStateOf(false) }
 
     Column(
         modifier = modifier
@@ -67,24 +71,59 @@ fun SettingsScreen(
         SectionTitle(stringResource(R.string.settings_section_display))
         Card(modifier = Modifier.fillMaxWidth()) {
             Column {
-                // 深色模式：点整行弹三选一对话框（当前值作为行摘要）
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { showDarkModeDialog = true }
-                        .padding(horizontal = 16.dp, vertical = 14.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(
-                        text = stringResource(R.string.settings_dark_mode_title),
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.weight(1f),
-                    )
-                    Text(
-                        text = stringResource(darkMode.labelRes),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
+                // 主题模式：点行展开下拉菜单（当前值 + 箭头，选中项带勾）
+                Box {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { themeMenuExpanded = true }
+                            .padding(horizontal = 16.dp, vertical = 14.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = stringResource(R.string.settings_dark_mode_title),
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.weight(1f),
+                        )
+                        Text(
+                            text = stringResource(darkMode.labelRes),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                        Icon(
+                            imageVector = Icons.Filled.ArrowDropDown,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    DropdownMenu(
+                        expanded = themeMenuExpanded,
+                        onDismissRequest = { themeMenuExpanded = false },
+                    ) {
+                        DarkMode.entries.forEach { mode ->
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        text = stringResource(mode.labelRes),
+                                        style = MaterialTheme.typography.bodyLarge,
+                                    )
+                                },
+                                leadingIcon = {
+                                    if (mode == darkMode) {
+                                        Icon(
+                                            imageVector = Icons.Filled.Check,
+                                            contentDescription = null,
+                                            tint = MaterialTheme.colorScheme.primary,
+                                        )
+                                    }
+                                },
+                                onClick = {
+                                    onDarkModeChange(mode)
+                                    themeMenuExpanded = false
+                                },
+                            )
+                        }
+                    }
                 }
                 HorizontalDivider()
                 // OLED 纯黑：行内开关，默认关；仅深色模式下生效（描述已写明）
@@ -154,48 +193,6 @@ fun SettingsScreen(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
             )
         }
-    }
-
-    // 深色模式三选一对话框：点选项即生效并关闭；右下角可直接取消
-    if (showDarkModeDialog) {
-        AlertDialog(
-            onDismissRequest = { showDarkModeDialog = false },
-            title = { Text(stringResource(R.string.settings_dark_mode_title)) },
-            text = {
-                Column {
-                    DarkMode.entries.forEach { mode ->
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable {
-                                    onDarkModeChange(mode)
-                                    showDarkModeDialog = false
-                                }
-                                .padding(vertical = 4.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            RadioButton(
-                                selected = mode == darkMode,
-                                onClick = {
-                                    onDarkModeChange(mode)
-                                    showDarkModeDialog = false
-                                },
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                text = stringResource(mode.labelRes),
-                                style = MaterialTheme.typography.bodyLarge,
-                            )
-                        }
-                    }
-                }
-            },
-            confirmButton = {
-                TextButton(onClick = { showDarkModeDialog = false }) {
-                    Text(stringResource(R.string.action_cancel))
-                }
-            },
-        )
     }
 }
 

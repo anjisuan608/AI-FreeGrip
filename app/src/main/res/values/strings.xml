@@ -22,7 +22,7 @@
     <string name="grip_status_not_support">设备不支持</string>
     <string name="grip_status_not_support_guide">当前设备不支持 AI 随心握，演示功能入口已隐藏。可参阅官方「支持的设备列表」确认机型。</string>
     <string name="grip_status_setting_off">功能开关已关闭</string>
-    <string name="grip_status_setting_off_guide">请前往：设置 &gt; 智能辅助 &gt; AI 随心握，开启后返回本应用重新检测。</string>
+    <string name="grip_status_setting_off_guide">请前往：设置 &gt; 智能辅助 &gt; AI 随心握，或 设置 &gt; 荣耀 AI &amp; YOYO &gt; AI 随心握；开启后返回本应用重新检测。</string>
     <string name="grip_status_no_permission">缺少权限</string>
     <string name="grip_status_no_permission_guide">请前往：设置 &gt; 隐私和安全 &gt; 权限管理 &gt; 设备动作与方向，将本应用设为「允许」后重新检测。</string>
     <string name="grip_status_other_error">注册失败（其他错误）</string>
@@ -41,14 +41,14 @@
     <string name="action_recheck">尝试重新检测</string>
     <string name="action_open_settings">打开设置</string>
     <string name="action_back">返回</string>
-    <string name="action_cancel">取消</string>
+    <string name="action_restart">重启应用</string>
     <string name="label_current_grip">当前握姿</string>
     <string name="label_registered_on">监听已注册</string>
     <string name="label_registered_off">监听未注册</string>
 
     <!-- 设置页：显示（深色三态 + OLED 纯黑） -->
     <string name="settings_section_display">显示</string>
-    <string name="settings_dark_mode_title">深色模式</string>
+    <string name="settings_dark_mode_title">主题模式</string>
     <string name="settings_dark_mode_system">跟随系统</string>
     <string name="settings_dark_mode_light">浅色模式</string>
     <string name="settings_dark_mode_dark">深色模式</string>

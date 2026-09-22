@@ -51,6 +51,7 @@ fun MainScreen(
     state: GripUiState,
     onRecheck: () -> Unit,
     onOpenSettings: () -> Unit,
+    onRestart: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -68,6 +69,7 @@ fun MainScreen(
             registered = state.registered,
             onRecheck = onRecheck,
             onOpenSettings = onOpenSettings,
+            onRestart = onRestart,
             modifier = Modifier.fillMaxWidth(),
         )
 
@@ -122,6 +124,7 @@ private fun MainScreenSupportedPreview() {
             ),
             onRecheck = {},
             onOpenSettings = {},
+            onRestart = {},
         )
     }
 }
@@ -134,6 +137,7 @@ private fun MainScreenSettingOffPreview() {
             state = GripUiState(support = GripSupportStatus.SettingOff),
             onRecheck = {},
             onOpenSettings = {},
+            onRestart = {},
         )
     }
 }
@@ -146,6 +150,7 @@ private fun MainScreenNotSupportedPreview() {
             state = GripUiState(support = GripSupportStatus.NotSupported),
             onRecheck = {},
             onOpenSettings = {},
+            onRestart = {},
         )
     }
 }

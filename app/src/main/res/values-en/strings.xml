@@ -22,7 +22,7 @@
     <string name="grip_status_not_support">Device not supported</string>
     <string name="grip_status_not_support_guide">This device does not support AI FreeGrip, so the demo entry is hidden. Check the official Supported devices list for your model.</string>
     <string name="grip_status_setting_off">Feature switch is off</string>
-    <string name="grip_status_setting_off_guide">Go to: Settings &gt; Smart assistance &gt; AI FreeGrip, enable it, then return to this app and re-check.</string>
+    <string name="grip_status_setting_off_guide">Go to: Settings &gt; Smart assistance &gt; AI FreeGrip, or Settings &gt; HONOR AI &amp; YOYO &gt; AI FreeGrip; enable it, then return to this app and re-check.</string>
     <string name="grip_status_no_permission">Permission missing</string>
     <string name="grip_status_no_permission_guide">Go to: Settings &gt; Privacy and security &gt; Permission manager &gt; Motion and orientation, set this app to Allow, then re-check.</string>
     <string name="grip_status_other_error">Registration failed (other error)</string>
@@ -40,14 +40,14 @@
     <string name="action_recheck">Try re-detection</string>
     <string name="action_open_settings">Open settings</string>
     <string name="action_back">Back</string>
-    <string name="action_cancel">Cancel</string>
+    <string name="action_restart">Restart app</string>
     <string name="label_current_grip">Current grip</string>
     <string name="label_registered_on">Listener registered</string>
     <string name="label_registered_off">Listener not registered</string>
 
     <!-- Settings: display (three-state dark mode + OLED pure black) -->
     <string name="settings_section_display">Display</string>
-    <string name="settings_dark_mode_title">Dark mode</string>
+    <string name="settings_dark_mode_title">Theme mode</string>
     <string name="settings_dark_mode_system">Follow system</string>
     <string name="settings_dark_mode_light">Light</string>
     <string name="settings_dark_mode_dark">Dark</string>

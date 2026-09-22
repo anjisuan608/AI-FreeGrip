@@ -29,7 +29,8 @@ import org.anjisuan608.hihonor.ai_freegrip.ui.theme.AIFreegripTheme
  * 容器配色语义：
  * - 支持 → secondaryContainer（正常）
  * - 状态 2/3 → tertiaryContainer（可行动的警告，带「重新检测/打开设置」按钮）
- * - 状态 1/4 → errorContainer（不可行动的错误）
+ * - 状态 4 → errorContainer（带「重新检测/重启应用」按钮）
+ * - 状态 1 → errorContainer（不可行动的错误，隐藏入口）
  */
 @Composable
 fun GripStatusCard(
@@ -38,6 +39,7 @@ fun GripStatusCard(
     registered: Boolean,
     onRecheck: () -> Unit,
     onOpenSettings: () -> Unit,
+    onRestart: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -79,6 +81,18 @@ fun GripStatusCard(
                     }
                     OutlinedButton(onClick = onOpenSettings) {
                         Text(stringResource(R.string.action_open_settings))
+                    }
+                }
+            }
+
+            if (support == GripSupportStatus.OtherError) {
+                // 状态 4：提供自救手段——先重试查询/注册，仍失败则重启应用
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Button(onClick = onRecheck) {
+                        Text(stringResource(R.string.action_recheck))
+                    }
+                    OutlinedButton(onClick = onRestart) {
+                        Text(stringResource(R.string.action_restart))
                     }
                 }
             }
@@ -152,6 +166,7 @@ private fun StatusPreview(support: GripSupportStatus) {
             registered = support.canRegister,
             onRecheck = {},
             onOpenSettings = {},
+            onRestart = {},
         )
     }
 }
