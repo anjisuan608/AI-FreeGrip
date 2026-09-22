@@ -143,6 +143,8 @@ ui/theme/                 # 沿用模板主题，不引入第三方主题库
 
 导航约定：单 Activity 三页面（主页/模拟/设置），`AppPage` 枚举 + `mutableStateOf` 切换，**不引入导航库**；
 「关于」是设置页里的一个入口项，点开后作为**设置的子页面**叠加显示（顶栏换返回箭头、隐藏底部导航，返回键先回设置页）。
+返回处理走 `BackHandler`（OnBackPressedDispatcher），manifest 已开 `enableOnBackInvokedCallback` 适配**预测性返回**：
+子页/非主页拦截返回时为应用内回退，主页不拦截、交系统播放返回跟手动画后退出。
 外层 `Scaffold` 统一持有 TopAppBar 与底部 `NavigationBar`，页面内容组件不再各自套 Scaffold（避免嵌套 inset 双重填充）。
 外跳链接一律 `LocalUriHandler.openUri` 交给系统浏览器，**不新增 manifest 权限**。
 

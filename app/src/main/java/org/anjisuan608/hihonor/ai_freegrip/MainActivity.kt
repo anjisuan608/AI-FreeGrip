@@ -49,6 +49,10 @@ import org.anjisuan608.hihonor.ai_freegrip.ui.theme.DarkMode
  * - 「关于」是设置页里的入口项：`showAbout` 为 true 时叠加显示关于子页
  *   （顶栏换返回箭头、隐藏底部导航，返回键先回设置页）。
  *
+ * 返回处理已适配预测性返回：manifest 开 `enableOnBackInvokedCallback`，
+ * [BackHandler] 经 OnBackPressedDispatcher 桥接到系统 OnBackInvokedDispatcher；
+ * 主页不拦截返回（BackHandler disabled），由系统播放跟手动画后退出。
+ *
  * 设置项持久化：深色模式三态与 OLED 纯黑开关存 SharedPreferences（仅本机偏好，
  * 不涉及任何个人信息，不触碰合规红线）。
  */
