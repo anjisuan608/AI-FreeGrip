@@ -27,8 +27,10 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        // 17 是 Android 官方支持的 Java 语言特性上限；
+        // 不追 21/25：APK 跑在 ART 上由 D8 脱糖，且 Kotlin 2.2.10 的 jvmTarget 封顶 24。
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     buildFeatures {
         compose = true
@@ -36,6 +38,9 @@ android {
 }
 
 dependencies {
+    // 荣耀 AI FreeGrip 握持检测能力
+    implementation(libs.hihonor.smartgripkit)
+
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3)

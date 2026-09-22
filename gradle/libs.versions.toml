@@ -24,6 +24,9 @@ androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "u
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+# 荣耀 AI FreeGrip（SmartGrip Kit）握持检测 SDK。
+# 注意：坐标以官方 Maven 仓实测为准（smartgripkit 可解析；SDK 清单页所写的 smartgrip 为 404）。
+hihonor-smartgripkit = { group = "com.hihonor.mcs", name = "smartgripkit", version = "1.0.0.300" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

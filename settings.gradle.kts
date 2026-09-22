@@ -19,6 +19,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        // AI FreeGrip（SmartGrip Kit）SDK 的官方 Maven 仓。
+        // 因为 FAIL_ON_PROJECT_REPOS，仓库只能声明在这里。
+        maven { url = uri("https://developer.honor.com/repo") }
     }
 }
 
