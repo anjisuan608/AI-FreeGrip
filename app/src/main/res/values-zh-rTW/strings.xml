@@ -84,7 +84,6 @@
     <string name="entry_hidden_title">功能入口已隱藏</string>
     <string name="entry_hidden_desc">依官方建議：裝置不支援時隱藏示範功能入口。</string>
 
-    <string name="footer_text">AI FreeGrip · 榮耀終端股份有限公司</string>
 
     <!-- 關於頁：SDK 連結與開源資訊 -->
     <string name="about_section_links">SDK 相關連結</string>
@@ -100,7 +99,7 @@
     <!-- 合規揭露（欄位與措辭抄自官方《SDK 合規使用說明》） -->
     <string name="compliance_title">合規揭露</string>
     <string name="compliance_intro">本應用程式整合了榮耀 AI 隨心握（AI FreeGrip）服務。依據官方《SDK 合規使用說明》，向您揭露如下資訊：</string>
-    <string name="label_company">第三方公司名稱</string>
+    <string name="label_company">第三方 SDK 供應商名稱</string>
     <string name="value_company">榮耀終端股份有限公司 (HONOR)</string>
     <string name="label_sdk_name">第三方 SDK 名稱</string>
     <string name="value_sdk_name">AI FreeGrip</string>

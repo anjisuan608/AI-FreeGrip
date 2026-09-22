@@ -85,7 +85,6 @@
     <string name="entry_hidden_title">功能入口已隐藏</string>
     <string name="entry_hidden_desc">按官方建议：设备不支持时隐藏演示功能入口。</string>
 
-    <string name="footer_text">AI FreeGrip · 荣耀终端股份有限公司</string>
 
     <!-- 关于页：SDK 链接与开源信息 -->
     <string name="about_section_links">SDK 相关链接</string>
@@ -101,7 +100,7 @@
     <!-- 合规披露页（字段与措辞抄自官方《SDK 合规使用说明》，见 AGENTS.md 第 3 节） -->
     <string name="compliance_title">合规披露</string>
     <string name="compliance_intro">本应用集成了荣耀 AI 随心握（AI FreeGrip）服务。依据官方《SDK 合规使用说明》，向您披露如下信息：</string>
-    <string name="label_company">第三方公司名称</string>
+    <string name="label_company">第三方 SDK 供应商名称</string>
     <string name="value_company">荣耀终端股份有限公司</string>
     <string name="label_sdk_name">第三方 SDK 名称</string>
     <string name="value_sdk_name">AI FreeGrip</string>

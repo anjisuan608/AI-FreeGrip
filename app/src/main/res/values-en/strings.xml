@@ -84,7 +84,6 @@
     <string name="entry_hidden_title">Feature entry hidden</string>
     <string name="entry_hidden_desc">Per official guidance, the demo feature entry is hidden when the device is unsupported.</string>
 
-    <string name="footer_text">AI FreeGrip · HONOR</string>
 
     <!-- About: SDK links and open source info -->
     <string name="about_section_links">SDK links</string>
@@ -100,7 +99,7 @@
     <!-- Compliance disclosure (fields per the official SDK compliance instructions) -->
     <string name="compliance_title">Compliance disclosure</string>
     <string name="compliance_intro">This app integrates the HONOR AI FreeGrip service. Per the official SDK Compliance Instructions, we disclose the following:</string>
-    <string name="label_company">Third-party company name</string>
+    <string name="label_company">Third-party SDK provider name</string>
     <string name="value_company">荣耀终端股份有限公司 (HONOR)</string>
     <string name="label_sdk_name">Third-party SDK name</string>
     <string name="value_sdk_name">AI FreeGrip</string>

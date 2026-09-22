@@ -148,17 +148,6 @@ fun AboutScreen(modifier: Modifier = Modifier) {
                 }
             }
         }
-
-        item {
-            Text(
-                text = stringResource(R.string.footer_text),
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 4.dp),
-            )
-        }
     }
 }
 
