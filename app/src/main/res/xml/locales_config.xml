@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  声明支持的应用内语言（Android 13+ 的 per-app language 入口依赖它列出可选项）。
+  注意：这是资源声明，不是权限，不触碰 AGENTS.md「不新增权限」红线。
+-->
+<locale-config xmlns:android="http://schemas.android.com/apk/res/android">
+    <locale android:name="zh-CN" />
+    <locale android:name="zh-TW" />
+    <locale android:name="zh-HK" />
+    <locale android:name="en-US" />
+</locale-config>

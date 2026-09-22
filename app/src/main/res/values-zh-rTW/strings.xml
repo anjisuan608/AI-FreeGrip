@@ -1,0 +1,117 @@
+<resources>
+    <!-- zh-TW：非 zh-CN 语言下应用名/标题保持「AI 随心握」的繁体对应 -->
+    <string name="app_name">AI 隨心握</string>
+
+    <!-- 握持狀態（5 種，取值見 AGENTS.md 2.2） -->
+    <string name="grip_state_not_held">未握持</string>
+    <string name="grip_state_left_hand">左手握持</string>
+    <string name="grip_state_right_hand">右手握持</string>
+    <string name="grip_state_both_hands">雙手握持</string>
+    <string name="grip_state_unknown">未識別</string>
+
+    <!-- 模擬器用短標籤 -->
+    <string name="grip_sim_not_held">未握</string>
+    <string name="grip_sim_left">左手</string>
+    <string name="grip_sim_right">右手</string>
+    <string name="grip_sim_both">雙手</string>
+    <string name="grip_sim_unknown">未知</string>
+
+    <!-- 裝置支援狀態（錯誤碼 0~4） -->
+    <string name="grip_status_supported">裝置支援 AI 隨心握</string>
+    <string name="grip_status_supported_guide">可註冊握持監聽器，握姿變化將即時驅動下方示範佈局。</string>
+    <string name="grip_status_not_support">裝置不支援</string>
+    <string name="grip_status_not_support_guide">目前裝置不支援 AI 隨心握，示範功能入口已隱藏。可參閱官方「支援的裝置列表」確認機型。</string>
+    <string name="grip_status_setting_off">功能開關已關閉</string>
+    <string name="grip_status_setting_off_guide">請前往：設定 &gt; 智能輔助 &gt; AI 隨心握，開啟後返回本應用程式重新檢測。</string>
+    <string name="grip_status_no_permission">缺少權限</string>
+    <string name="grip_status_no_permission_guide">請前往：設定 &gt; 隱私與安全 &gt; 權限管理 &gt; 裝置動作與方向，將本應用程式設為「允許」後重新檢測。</string>
+    <string name="grip_status_other_error">註冊失敗（其他錯誤）</string>
+    <string name="grip_status_other_error_guide">請檢查 Context 是否為空、系統服務是否可用，詳見官方 FAQ。</string>
+
+    <!-- 主介面 -->
+    <string name="main_title">AI 隨心握</string>
+    <string name="nav_home">主頁</string>
+    <string name="nav_simulator">模擬</string>
+    <string name="nav_about">關於</string>
+    <string name="nav_settings">設定</string>
+    <string name="settings_title">設定</string>
+    <string name="sim_page_title">示範模擬</string>
+    <string name="about_title">關於與合規</string>
+    <string name="expected_section_title">預期行為示範區</string>
+    <string name="action_recheck">嘗試重新檢測</string>
+    <string name="action_open_settings">開啟設定</string>
+    <string name="action_back">返回</string>
+    <string name="action_cancel">取消</string>
+    <string name="label_current_grip">目前握姿</string>
+    <string name="label_registered_on">監聽已註冊</string>
+    <string name="label_registered_off">監聽未註冊</string>
+
+    <!-- 設定頁：顯示（深色三態 + OLED 純黑） -->
+    <string name="settings_section_display">顯示</string>
+    <string name="settings_dark_mode_title">深色模式</string>
+    <string name="settings_dark_mode_system">跟隨系統</string>
+    <string name="settings_dark_mode_light">淺色模式</string>
+    <string name="settings_dark_mode_dark">深色模式</string>
+    <string name="settings_oled_title">OLED 純黑模式</string>
+    <string name="settings_oled_desc">僅深色模式下生效：背景切換為純黑，降低 OLED 螢幕耗電。</string>
+    <!-- 設定頁：語言（跳 Android 原生「應用語言」頁） -->
+    <string name="settings_section_language">語言</string>
+    <string name="settings_language_title">應用語言</string>
+    <string name="settings_language_desc">開啟 Android 原生應用語言設定</string>
+
+    <!-- 示範區（模擬真實業務介面） -->
+    <string name="demo_screen_title">商品詳情 · 示範</string>
+    <string name="demo_card_title">推薦內容 %1$d</string>
+    <string name="demo_card_body">這是一段模擬的真實業務內容；下方操作區會根據握姿自動靠左、靠右或對稱排佈。</string>
+    <string name="demo_action_label">操作區（隨握姿自適應）</string>
+    <string name="cta_primary">立即下單</string>
+    <string name="cta_secondary">加入收藏</string>
+
+    <!-- 各握姿下的佈局說明 -->
+    <string name="layout_hint_not_held">未握持：操作區置中對稱</string>
+    <string name="layout_hint_left">左手握持：互動入口靠左</string>
+    <string name="layout_hint_right">右手握持：互動入口靠右</string>
+    <string name="layout_hint_both">雙手握持：兩端對稱分佈</string>
+    <string name="layout_hint_unknown">未識別：保持目前或恢復預設</string>
+
+    <!-- 示範模擬器 -->
+    <string name="simulator_title">示範模擬器</string>
+    <string name="simulator_hint">非榮耀裝置或無握持輸入時，可手動預覽各握姿下的佈局。</string>
+    <string name="simulator_follow_real">跟隨真實</string>
+    <string name="simulator_simulating">模擬中：%1$s（點「跟隨真實」恢復）</string>
+
+    <!-- 裝置不支援時隱藏功能入口 -->
+    <string name="entry_hidden_title">功能入口已隱藏</string>
+    <string name="entry_hidden_desc">依官方建議：裝置不支援時隱藏示範功能入口。</string>
+
+    <string name="footer_text">AI FreeGrip · 榮耀終端股份有限公司</string>
+
+    <!-- 關於頁：SDK 連結與開源資訊 -->
+    <string name="about_section_links">SDK 相關連結</string>
+    <string name="about_link_sdk_doc">HONOR AI FreeGrip 開發者文件</string>
+    <string name="about_section_open_source">開源資訊</string>
+    <string name="about_label_author">作者</string>
+    <string name="about_value_author">anjisuan608</string>
+    <string name="about_label_license">授權條款</string>
+    <string name="about_value_license">MIT</string>
+    <string name="about_label_repo">GitHub 儲存庫</string>
+    <string name="about_value_repo">github.com/anjisuan608/AI-Freegrip</string>
+
+    <!-- 合規揭露（欄位與措辭抄自官方《SDK 合規使用說明》） -->
+    <string name="compliance_title">合規揭露</string>
+    <string name="compliance_intro">本應用程式整合了榮耀 AI 隨心握（AI FreeGrip）服務。依據官方《SDK 合規使用說明》，向您揭露如下資訊：</string>
+    <string name="label_company">第三方公司名稱</string>
+    <string name="value_company">榮耀終端股份有限公司 (HONOR)</string>
+    <string name="label_sdk_name">第三方 SDK 名稱</string>
+    <string name="value_sdk_name">AI FreeGrip</string>
+    <string name="label_purpose">SDK 使用目的</string>
+    <string name="value_purpose">為三方應用程式提供榮耀 AI 隨心握（握姿檢測）開放能力</string>
+    <string name="label_scene">SDK 使用場景</string>
+    <string name="value_scene">應用程式可根據使用者握姿（左手/右手/雙手/未握持）調整 UI 佈局、互動入口位置等</string>
+    <string name="label_personal_info">處理的個人資訊類型</string>
+    <string name="label_permission">實作 SDK 產品功能所需的權限</string>
+    <string name="label_privacy_link">SDK 隱私權聲明連結</string>
+    <string name="value_not_involved">不涉及</string>
+    <string name="compliance_sdk_version">目前 SDK 版本：com.hihonor.mcs:smartgripkit 1.0.0.300</string>
+    <string name="compliance_note">說明：本示範程式僅在本地把握姿映射為佈局變化，不收集、不上傳任何個人資訊，也未實作自動啟動/關聯啟動。</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      夜间窗口主题：模板只有 Light 父主题，系统深色下启动会先露出白底窗口。
+      换成深色父主题消除首帧白闪；Compose 接管后仅窗口背景仍受此影响。
+    -->
+    <style name="Theme.AIFreegrip" parent="android:Theme.Material.NoActionBar" />
+</resources>

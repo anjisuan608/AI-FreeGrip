@@ -1,0 +1,117 @@
+<resources>
+    <!-- en-US：非 zh-CN 语言下应用名/标题保持「AI 随心握」的官方英文名 AI FreeGrip -->
+    <string name="app_name">AI FreeGrip</string>
+
+    <!-- Grip states (5, values per AGENTS.md 2.2) -->
+    <string name="grip_state_not_held">Not held</string>
+    <string name="grip_state_left_hand">Left-hand grip</string>
+    <string name="grip_state_right_hand">Right-hand grip</string>
+    <string name="grip_state_both_hands">Two-hand grip</string>
+    <string name="grip_state_unknown">Unknown</string>
+
+    <!-- Simulator short labels -->
+    <string name="grip_sim_not_held">None</string>
+    <string name="grip_sim_left">Left</string>
+    <string name="grip_sim_right">Right</string>
+    <string name="grip_sim_both">Both</string>
+    <string name="grip_sim_unknown">Unknown</string>
+
+    <!-- Device support status (error codes 0-4) -->
+    <string name="grip_status_supported">Device supports AI FreeGrip</string>
+    <string name="grip_status_supported_guide">A grip listener can be registered; grip changes will drive the demo layout below in real time.</string>
+    <string name="grip_status_not_support">Device not supported</string>
+    <string name="grip_status_not_support_guide">This device does not support AI FreeGrip, so the demo entry is hidden. Check the official Supported devices list for your model.</string>
+    <string name="grip_status_setting_off">Feature switch is off</string>
+    <string name="grip_status_setting_off_guide">Go to: Settings &gt; Smart assistance &gt; AI FreeGrip, enable it, then return to this app and re-check.</string>
+    <string name="grip_status_no_permission">Permission missing</string>
+    <string name="grip_status_no_permission_guide">Go to: Settings &gt; Privacy and security &gt; Permission manager &gt; Motion and orientation, set this app to Allow, then re-check.</string>
+    <string name="grip_status_other_error">Registration failed (other error)</string>
+    <string name="grip_status_other_error_guide">Check that Context is not null and that the system service is available. See the official FAQ.</string>
+
+    <!-- Main screen -->
+    <string name="main_title">AI FreeGrip</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_simulator">Simulate</string>
+    <string name="nav_about">About</string>
+    <string name="nav_settings">Settings</string>
+    <string name="settings_title">Settings</string>
+    <string name="sim_page_title">Demo simulation</string>
+    <string name="about_title">About and compliance</string>
+    <string name="expected_section_title">Expected behavior demo</string>
+    <string name="action_recheck">Try re-detection</string>
+    <string name="action_open_settings">Open settings</string>
+    <string name="action_back">Back</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="label_current_grip">Current grip</string>
+    <string name="label_registered_on">Listener registered</string>
+    <string name="label_registered_off">Listener not registered</string>
+
+    <!-- Settings: display (three-state dark mode + OLED pure black) -->
+    <string name="settings_section_display">Display</string>
+    <string name="settings_dark_mode_title">Dark mode</string>
+    <string name="settings_dark_mode_system">Follow system</string>
+    <string name="settings_dark_mode_light">Light</string>
+    <string name="settings_dark_mode_dark">Dark</string>
+    <string name="settings_oled_title">OLED pure black</string>
+    <string name="settings_oled_desc">Applies in dark mode only: switches the background to pure black to save power on OLED screens.</string>
+    <!-- Settings: language (opens the native Android app language screen) -->
+    <string name="settings_section_language">Language</string>
+    <string name="settings_language_title">App language</string>
+    <string name="settings_language_desc">Opens the native Android app language settings</string>
+
+    <!-- Demo area (simulated real business UI) -->
+    <string name="demo_screen_title">Product detail · Demo</string>
+    <string name="demo_card_title">Recommended content %1$d</string>
+    <string name="demo_card_body">This is simulated business content; the action area below moves left, right, or stays symmetric based on grip.</string>
+    <string name="demo_action_label">Action area (adapts to grip)</string>
+    <string name="cta_primary">Buy now</string>
+    <string name="cta_secondary">Add to favorites</string>
+
+    <!-- Layout hints per grip pose -->
+    <string name="layout_hint_not_held">Not held: action area centered</string>
+    <string name="layout_hint_left">Left-hand grip: entry points on the left</string>
+    <string name="layout_hint_right">Right-hand grip: entry points on the right</string>
+    <string name="layout_hint_both">Two-hand grip: split across both ends</string>
+    <string name="layout_hint_unknown">Unknown: keep current or reset to default</string>
+
+    <!-- Demo simulator -->
+    <string name="simulator_title">Demo simulator</string>
+    <string name="simulator_hint">When no grip input is available (non-HONOR devices), preview layouts manually.</string>
+    <string name="simulator_follow_real">Follow real</string>
+    <string name="simulator_simulating">Simulating: %1$s (tap Follow real to resume)</string>
+
+    <!-- Hide the feature entry when the device is unsupported -->
+    <string name="entry_hidden_title">Feature entry hidden</string>
+    <string name="entry_hidden_desc">Per official guidance, the demo feature entry is hidden when the device is unsupported.</string>
+
+    <string name="footer_text">AI FreeGrip · HONOR</string>
+
+    <!-- About: SDK links and open source info -->
+    <string name="about_section_links">SDK links</string>
+    <string name="about_link_sdk_doc">HONOR AI FreeGrip developer documentation</string>
+    <string name="about_section_open_source">Open source</string>
+    <string name="about_label_author">Author</string>
+    <string name="about_value_author">anjisuan608</string>
+    <string name="about_label_license">License</string>
+    <string name="about_value_license">MIT</string>
+    <string name="about_label_repo">GitHub repository</string>
+    <string name="about_value_repo">github.com/anjisuan608/AI-Freegrip</string>
+
+    <!-- Compliance disclosure (fields per the official SDK compliance instructions) -->
+    <string name="compliance_title">Compliance disclosure</string>
+    <string name="compliance_intro">This app integrates the HONOR AI FreeGrip service. Per the official SDK Compliance Instructions, we disclose the following:</string>
+    <string name="label_company">Third-party company name</string>
+    <string name="value_company">荣耀终端股份有限公司 (HONOR)</string>
+    <string name="label_sdk_name">Third-party SDK name</string>
+    <string name="value_sdk_name">AI FreeGrip</string>
+    <string name="label_purpose">Purpose of SDK use</string>
+    <string name="value_purpose">Provides third-party apps with the HONOR AI FreeGrip (grip detection) open capability</string>
+    <string name="label_scene">SDK use scenarios</string>
+    <string name="value_scene">Apps can adjust UI layout and interaction entry positions based on user grip (left / right / both hands / not held)</string>
+    <string name="label_personal_info">Types of personal information processed</string>
+    <string name="label_permission">Permissions required to implement SDK features</string>
+    <string name="label_privacy_link">SDK privacy policy link</string>
+    <string name="value_not_involved">Not involved</string>
+    <string name="compliance_sdk_version">Current SDK version: com.hihonor.mcs:smartgripkit 1.0.0.300</string>
+    <string name="compliance_note">Note: this demo maps grip poses to layout changes entirely on device. It does not collect or upload any personal information and implements no auto-start or associated-start behavior.</string>
+</resources>

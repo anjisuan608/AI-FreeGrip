@@ -129,19 +129,31 @@ grip/
   GripSupportStatus.kt    # 支持状态枚举 + 错误码 → 文案/引导动作 的映射
   SmartGripRepository.kt  # 对 SmartGripEventManager 的唯一封装（SDK 交互出口，便于测试替身）
 ui/
-  AppPage.kt              # 三页面枚举（主页/模拟/关于）：导航 label、顶栏标题、底部图标
+  AppPage.kt              # 底部导航三页面枚举（主页/模拟/设置）：导航 label、顶栏标题、底部图标
   MainScreen.kt           # 主页：GripUiState + 设备支持模块 + 演示模块（含 GripUiState 定义）
   GripStatusCard.kt       # 展示当前支持状态/握持状态/错误引导
   AdaptedLayout.kt        # 根据 GripState 重排的演示布局（居中/靠左/靠右/对称）
   SimulatorScreen.kt      # 模拟页：演示模拟器 + 预期行为演示区（复用 AdaptedLayout）
-  AboutScreen.kt          # 关于页：合规披露 7 字段 + HONOR 开发者链接 + 作者/MIT/仓库
+  SettingsScreen.kt       # 设置页：深色模式三选一对话框 + OLED 纯黑开关 + 应用语言入口 + 关于入口
+  AboutScreen.kt          # 关于子页（设置内入口打开）：合规披露 7 字段 + HONOR 开发者链接 + 作者/MIT/仓库
+  theme/DarkMode.kt       # 深色三态枚举：System/Light/Dark（SharedPreferences 持久化，脏数据回退 System）
 MainActivity.kt           # 生命周期接线 + 外层 Scaffold（顶栏 + 底部导航）+ 页面切换
 ui/theme/                 # 沿用模板主题，不引入第三方主题库
 ```
 
-导航约定：单 Activity 三页面，`AppPage` 枚举 + `mutableStateOf` 切换，**不引入导航库**；
+导航约定：单 Activity 三页面（主页/模拟/设置），`AppPage` 枚举 + `mutableStateOf` 切换，**不引入导航库**；
+「关于」是设置页里的一个入口项，点开后作为**设置的子页面**叠加显示（顶栏换返回箭头、隐藏底部导航，返回键先回设置页）。
 外层 `Scaffold` 统一持有 TopAppBar 与底部 `NavigationBar`，页面内容组件不再各自套 Scaffold（避免嵌套 inset 双重填充）。
 外跳链接一律 `LocalUriHandler.openUri` 交给系统浏览器，**不新增 manifest 权限**。
+
+显示与语言（设置页）：
+- **深色模式**：Shizuku 式点开弹 AlertDialog 三选一（跟随系统/浅色/深色），**默认跟随系统**；状态存 SharedPreferences。
+- **OLED 纯黑**：仅深色模式下把背景与各层级表面覆盖为纯黑（`Theme.kt` 中 `oledBlack` 参数），默认关。
+- **应用语言**：跳 Android 原生 `Settings.ACTION_APP_LOCALE_SETTINGS`（`res/xml/locales_config.xml` 声明
+  zh-CN/zh-TW/zh-HK/en-US），个别 ROM 无该页时回退 `ACTION_APPLICATION_DETAILS_SETTINGS`；均不需要 manifest 权限。
+- **多语言资源**：6 份 `strings.xml`（`values/` 默认 zh-CN、`values-zh/`、`values-zh-rCN/`、`values-en/`、
+  `values-zh-rTW/`、`values-zh-rHK/`），**key 必须全量对齐**（lint MissingTranslation）。
+  应用名/标题：zh-CN 为「适人握持」，en 为「AI FreeGrip」，zh-TW/HK 为「AI 隨心握」。
 
 设计约定：
 
@@ -160,7 +172,7 @@ ui/theme/                 # 沿用模板主题，不引入第三方主题库
 - **P0 — 仓库与依赖**：settings.gradle.kts 加 Maven 仓；`libs.versions.toml` 加 smartgrip 依赖；验证坐标可解析（见 2.1 风险点）；提交一次。
 - **P1 — 数据层**：实现 `GripState`、`GripSupportStatus`、`SmartGripRepository`（支持状态查询 + 注册/解注册 + 回调线程切换）；为状态映射写单元测试（`app/src/test`）。
 - **P2 — 主界面**：`MainScreen` + `GripStatusCard` + `AdaptedLayout`，按 2.4 生命周期接到 `MainActivity`；5 种握姿 + 5 种支持状态均可在 Compose `@Preview` 中预览。
-- **P3 — 合规页**：`ComplianceScreen` 展示第 3 节披露字段；从主界面可达（顶栏入口或说明按钮）。
+- **P3 — 合规页**：`AboutScreen` 展示第 3 节披露字段；从设置页「关于」入口可达（子页面 + 返回）。
 - **P4 — 真机验证**：在支持设备（见支持的设备列表文档）上验证：支持状态 0 全流程、状态 2/3 的引导跳转文案、onPause/onResume 反复注册无泄漏、横竖屏/前后台切换稳定。
 - **P5 — 收尾**：README（接入步骤 + 截图 + 支持设备说明）、`.gitignore` 复核（勿提交 aar/keystore/local.properties）、全量构建通过。
 

@@ -1,5 +1,5 @@
 <resources>
-    <!-- 默认资源即 zh-CN：应用名/标题按需求用「适人握持」；values-zh / values-zh-rCN 为其副本（显式声明避免 lint MissingTranslation） -->
+    <!-- zh-CN：默认资源即简体中文（无 values-zh-rCN，靠回退命中）；应用名/标题按需求用「适人握持」 -->
     <string name="app_name">适人握持</string>
 
     <!-- 握持状态（5 种，取值见 AGENTS.md 2.2） -->
