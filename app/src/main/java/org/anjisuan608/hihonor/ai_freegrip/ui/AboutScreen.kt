@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.anjisuan608.hihonor.ai_freegrip.R
 import org.anjisuan608.hihonor.ai_freegrip.ui.theme.AIFreegripTheme
+import org.anjisuan608.hihonor.ai_freegrip.ui.theme.oledModuleBorder
 
 /** 荣耀 AI FreeGrip 官方开发者文档（Introduction 页）。 */
 private const val SDK_DOC_URL = "https://developer.honor.com/cn/docs/aifreegrip/guides/introduction"
@@ -90,7 +91,7 @@ fun AboutScreen(modifier: Modifier = Modifier) {
             }
         }
         item {
-            Card(modifier = Modifier.fillMaxWidth()) {
+            Card(modifier = Modifier.fillMaxWidth(), border = oledModuleBorder()) {
                 Column(modifier = Modifier.padding(14.dp)) {
                     Text(
                         text = stringResource(R.string.compliance_sdk_version),
@@ -122,7 +123,7 @@ fun AboutScreen(modifier: Modifier = Modifier) {
             SectionTitle(stringResource(R.string.about_section_open_source))
         }
         item {
-            Card(modifier = Modifier.fillMaxWidth()) {
+            Card(modifier = Modifier.fillMaxWidth(), border = oledModuleBorder()) {
                 Column(
                     modifier = Modifier.padding(14.dp),
                     verticalArrangement = Arrangement.spacedBy(10.dp),

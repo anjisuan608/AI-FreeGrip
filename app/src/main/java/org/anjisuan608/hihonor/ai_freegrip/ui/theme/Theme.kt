@@ -2,6 +2,7 @@ package org.anjisuan608.hihonor.ai_freegrip.ui.theme
 
 import android.app.Activity
 import android.os.Build
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -9,8 +10,29 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+
+/**
+ * OLED 纯黑是否激活（深色 + 开关开）。
+ * 纯黑会让默认 surface 底色的模块卡与背景融为一体，各模块据此补边框。
+ */
+val LocalOledActive = staticCompositionLocalOf { false }
+
+/**
+ * 模块卡片的范围边框：仅 OLED 纯黑激活时返回 1dp [outlineVariant] 描边，
+ * 其余模式返回 null（保持 Material 默认无边框外观）。
+ */
+@Composable
+fun oledModuleBorder(): BorderStroke? =
+    if (LocalOledActive.current) {
+        BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+    } else {
+        null
+    }
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -73,9 +95,12 @@ fun AIFreegripTheme(
         baseScheme
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
+    // OLED 纯黑激活位下发给各模块（卡片据此补范围边框）
+    CompositionLocalProvider(LocalOledActive provides (darkTheme && oledBlack)) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = Typography,
+            content = content
+        )
+    }
 }

@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.anjisuan608.hihonor.ai_freegrip.R
 import org.anjisuan608.hihonor.ai_freegrip.grip.GripState
+import org.anjisuan608.hihonor.ai_freegrip.ui.theme.oledModuleBorder
 
 /**
  * 演示模拟器：非荣耀设备/评审现场没有握持输入时，手动预览 5 种握姿的布局。
@@ -34,7 +35,7 @@ fun SimulatorCard(
     onSimulate: (GripState?) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Card(modifier = modifier) {
+    Card(modifier = modifier, border = oledModuleBorder()) {
         Column(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),

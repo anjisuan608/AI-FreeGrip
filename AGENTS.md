@@ -148,7 +148,8 @@ ui/theme/                 # 沿用模板主题，不引入第三方主题库
 
 显示与语言（设置页）：
 - **主题模式**：设置行点开下拉菜单三选一（跟随系统/浅色/深色），**默认跟随系统**；状态存 SharedPreferences。
-- **OLED 纯黑**：仅深色模式下把背景与各层级表面覆盖为纯黑（`Theme.kt` 中 `oledBlack` 参数），默认关。
+- **OLED 纯黑**：仅深色模式下把背景与各层级表面覆盖为纯黑（`Theme.kt` 中 `oledBlack` 参数），默认关；
+  纯黑会让模块卡与背景融为一体，激活时经 `oledModuleBorder()` 给模块卡补 1dp `outlineVariant` 范围边框。
 - **应用语言**：跳 Android 原生 `Settings.ACTION_APP_LOCALE_SETTINGS`（`res/xml/locales_config.xml` 声明
   zh-CN/zh-TW/zh-HK/en-US），个别 ROM 无该页时回退 `ACTION_APPLICATION_DETAILS_SETTINGS`；均不需要 manifest 权限。
 - **多语言资源**：6 份 `strings.xml`（`values/` 默认 zh-CN、`values-zh/`、`values-zh-rCN/`、`values-en/`、

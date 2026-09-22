@@ -13,9 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.materialIcon
+import androidx.compose.material.icons.materialPath
 import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -38,6 +37,35 @@ import androidx.compose.ui.unit.dp
 import org.anjisuan608.hihonor.ai_freegrip.R
 import org.anjisuan608.hihonor.ai_freegrip.ui.theme.AIFreegripTheme
 import org.anjisuan608.hihonor.ai_freegrip.ui.theme.DarkMode
+import org.anjisuan608.hihonor.ai_freegrip.ui.theme.oledModuleBorder
+
+/**
+ * MD3 `unfold_more`（收起/展开双向箭头）。
+ * material-icons-core 不含该图标，按 Material 官方路径用 materialIcon/materialPath
+ * 自绘，避免为一个图标引入 material-icons-extended 全集。
+ */
+private val UnfoldMore = materialIcon(name = "Filled.UnfoldMore") {
+    // 上：尖朝上（3→9），表示向上展开
+    materialPath {
+        moveTo(12f, 5.83f)
+        lineTo(15.17f, 9f)
+        lineTo(16.58f, 7.59f)
+        lineTo(12f, 3f)
+        lineTo(7.41f, 7.59f)
+        lineTo(8.83f, 9f)
+        close()
+    }
+    // 下：尖朝下（15→21），表示向下展开
+    materialPath {
+        moveTo(12f, 18.17f)
+        lineTo(8.83f, 15f)
+        lineTo(7.41f, 16.41f)
+        lineTo(12f, 21f)
+        lineTo(16.58f, 16.41f)
+        lineTo(15.17f, 15f)
+        close()
+    }
+}
 
 /**
  * 设置页（底部第三 tab），三部分：
@@ -69,7 +97,7 @@ fun SettingsScreen(
     ) {
         // ---- 显示 ----
         SectionTitle(stringResource(R.string.settings_section_display))
-        Card(modifier = Modifier.fillMaxWidth()) {
+        Card(modifier = Modifier.fillMaxWidth(), border = oledModuleBorder()) {
             Column {
                 // 主题模式：点行展开下拉菜单（当前值 + 箭头，选中项带勾）
                 Box {
@@ -91,7 +119,7 @@ fun SettingsScreen(
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                         Icon(
-                            imageVector = Icons.Filled.ArrowDropDown,
+                            imageVector = UnfoldMore,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
@@ -107,15 +135,6 @@ fun SettingsScreen(
                                         text = stringResource(mode.labelRes),
                                         style = MaterialTheme.typography.bodyLarge,
                                     )
-                                },
-                                leadingIcon = {
-                                    if (mode == darkMode) {
-                                        Icon(
-                                            imageVector = Icons.Filled.Check,
-                                            contentDescription = null,
-                                            tint = MaterialTheme.colorScheme.primary,
-                                        )
-                                    }
                                 },
                                 onClick = {
                                     onDarkModeChange(mode)

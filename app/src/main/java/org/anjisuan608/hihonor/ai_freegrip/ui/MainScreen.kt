@@ -20,6 +20,7 @@ import org.anjisuan608.hihonor.ai_freegrip.R
 import org.anjisuan608.hihonor.ai_freegrip.grip.GripState
 import org.anjisuan608.hihonor.ai_freegrip.grip.GripSupportStatus
 import org.anjisuan608.hihonor.ai_freegrip.ui.theme.AIFreegripTheme
+import org.anjisuan608.hihonor.ai_freegrip.ui.theme.oledModuleBorder
 
 /**
  * 主界面的唯一状态源（由 MainActivity 持有）。
@@ -89,7 +90,7 @@ fun MainScreen(
 /** 设备不支持时的占位说明（功能入口本体已隐藏）。 */
 @Composable
 private fun HiddenEntry(modifier: Modifier = Modifier) {
-    Card(modifier = modifier) {
+    Card(modifier = modifier, border = oledModuleBorder()) {
         Column(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp),

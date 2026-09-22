@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import org.anjisuan608.hihonor.ai_freegrip.R
 import org.anjisuan608.hihonor.ai_freegrip.grip.GripState
 import org.anjisuan608.hihonor.ai_freegrip.ui.theme.AIFreegripTheme
+import org.anjisuan608.hihonor.ai_freegrip.ui.theme.oledModuleBorder
 
 /**
  * 核心演示区：一个「模拟的真实业务界面」，操作区随握姿实时重排——
@@ -48,7 +49,7 @@ fun AdaptedLayout(
     modifier: Modifier = Modifier,
     @StringRes titleRes: Int = R.string.demo_screen_title,
 ) {
-    Card(modifier = modifier) {
+    Card(modifier = modifier, border = oledModuleBorder()) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = stringResource(titleRes),
