@@ -135,7 +135,7 @@ ui/
   AdaptedLayout.kt        # 根据 GripState 重排的演示布局（居中/靠左/靠右/对称）
   SimulatorScreen.kt      # 模拟页：演示模拟器 + 演示区「商品详情 · 模拟」（仅跟随模拟器，复用 AdaptedLayout）
   SettingsScreen.kt       # 设置页：主题模式下拉菜单三选一 + OLED 纯黑开关 + 应用语言入口 + 关于入口
-  AboutScreen.kt          # 关于子页（设置内入口打开）：合规披露 7 字段 + HONOR 开发者链接 + 作者/MIT/仓库
+  AboutScreen.kt          # 关于子页（设置内入口/深链打开）：合规 7 字段 + HONOR 链接；作者行→GitHub 主页，「仓库」行 value=GitHub→仓库 URL
   theme/DarkMode.kt       # 深色三态枚举：System/Light/Dark（SharedPreferences 持久化，脏数据回退 System）
 MainActivity.kt           # 主活动：主体三页（AppPage 内存切换）+ launcher + Shortcuts meta-data + 深链 VIEW filter
 AboutActivity.kt          # 关于独立子活动（exported，standard 压栈：从设置入口/深链打开，返回 关于→设置→主页）
@@ -149,7 +149,10 @@ ui/theme/                 # 沿用模板主题，不引入第三方主题库
 「关于」是**独立的 `AboutActivity`**（`exported`），从设置入口或深链 `standard` 压栈打开，顶栏返回箭头与系统返回键都 `finish()`，返回链 关于→设置→主页。
 跨界面共享的 `GripUiState`、主题设置、握持监听、偏好全部收敛在 `AIFreegripApp`（Application 唯一状态源），
 `BaseAppActivity` 在每个前台活动 `onResume` 注册 / `onPause` 解注册（同屏前台唯一，切换顺序 pause→resume 不断档，repository 幂等）。
-返回处理走 `BackHandler`（非主页 tab 先回主页，主页交系统 finish），manifest 已开 `enableOnBackInvokedCallback` 适配**预测性返回**。
+返回处理走 `BackHandler`（非主页 tab 先回主页，主页交系统 finish）。
+预测性返回：application 级开 `enableOnBackInvokedCallback`，但 **`MainActivity` 显式关闭**（主活动按需求不用预测性返回，
+BackHandler/finish 走传统 back 分发）；`AboutActivity` 未覆盖、继承启用。
+tab 切换带方向感知滑动动画（`AnimatedContent`：前进自右滑入、后退自左，300ms；padding 挂动画容器外防抖）。
 **App Shortcuts**：静态四入口（主页/模拟/设置/关于）声明于 `res/xml/shortcuts.xml`（主活动的 `android.app.shortcuts` meta-data），
 经 `aifreegrip://page/{id}` 深链路由——`MainActivity.applyShortcutRoute` 在 `onCreate`/`onNewIntent` 解析切 tab，
 「about」先切设置 tab 再压入 `AboutActivity`；⚠️ scheme 必须在主活动注册 VIEW intent-filter——
@@ -160,7 +163,8 @@ ui/theme/                 # 沿用模板主题，不引入第三方主题库
 显示与语言（设置页）：
 - **主题模式**：设置行点开下拉菜单三选一（跟随系统/浅色/深色），**默认跟随系统**；状态存 SharedPreferences。
 - **OLED 纯黑**：仅深色模式下把背景与各层级表面覆盖为纯黑（`Theme.kt` 中 `oledBlack` 参数），默认关；
-  纯黑会让模块卡与背景融为一体，激活时经 `oledModuleBorder()` 给模块卡补 1dp `outlineVariant` 范围边框。
+  纯黑会让模块卡与背景融为一体，激活时经 `oledModuleBorder()` 给模块卡补 1dp `outlineVariant` 范围边框；
+  底栏 `NavigationBar` 同时换区分色 `#141414`（`AppScaffold` 读 `LocalOledActive`），非 OLED 维持默认 surfaceContainer。
 - **应用语言**：跳 Android 原生 `Settings.ACTION_APP_LOCALE_SETTINGS`（`res/xml/locales_config.xml` 声明
   zh-CN/zh-TW/zh-HK/en-US），个别 ROM 无该页时回退 `ACTION_APPLICATION_DETAILS_SETTINGS`；均不需要 manifest 权限。
 - **多语言资源**：6 份 `strings.xml`（`values/` 默认 zh-CN、`values-zh/`、`values-zh-rCN/`、`values-en/`、

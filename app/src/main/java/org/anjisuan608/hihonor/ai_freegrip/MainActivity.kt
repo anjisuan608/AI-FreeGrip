@@ -5,6 +5,14 @@ import android.os.Bundle
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -51,32 +59,53 @@ class MainActivity : BaseAppActivity() {
                     page = currentPage,
                     onNavigate = { currentPage = it },
                 ) { padding ->
-                    when (currentPage) {
-                        AppPage.Home -> MainScreen(
-                            state = app.uiState,
-                            onRecheck = app::recheckSupport,
-                            onOpenSettings = { app.openSystemSettings(this) },
-                            onRestart = { app.restartApp(this) },
-                            modifier = padding,
-                        )
+                    // 页面切换滑动过渡：前进（序号增，如 主页→设置）新页自右滑入、
+                    // 旧页向左滑出，后退方向相反；padding 挂在动画容器外避免抖动
+                    AnimatedContent(
+                        targetState = currentPage,
+                        modifier = padding.fillMaxSize(),
+                        transitionSpec = {
+                            // receiver 是 AnimatedContentTransitionScope（实现 Transition.Segment）：
+                            // 属性为 initialState/targetState（无 currentState，API 已改名）
+                            val enterDir =
+                                if (targetState.ordinal >= initialState.ordinal) 1 else -1
+                            (slideInHorizontally(tween(300)) { full -> full * enterDir } +
+                                fadeIn(tween(300)))
+                                .togetherWith(
+                                    slideOutHorizontally(tween(300)) { full -> -full * enterDir } +
+                                        fadeOut(tween(160)),
+                                )
+                        },
+                        label = "page-transition",
+                    ) { page ->
+                        when (page) {
+                            AppPage.Home -> MainScreen(
+                                state = app.uiState,
+                                onRecheck = app::recheckSupport,
+                                onOpenSettings = { app.openSystemSettings(this@MainActivity) },
+                                onRestart = { app.restartApp(this@MainActivity) },
+                            )
 
-                        AppPage.Simulator -> SimulatorScreen(
-                            state = app.uiState,
-                            onSimulate = app::setSimulatedGrip,
-                            modifier = padding,
-                        )
+                            AppPage.Simulator -> SimulatorScreen(
+                                state = app.uiState,
+                                onSimulate = app::setSimulatedGrip,
+                            )
 
-                        AppPage.Settings -> SettingsScreen(
-                            darkMode = app.darkMode,
-                            oledBlack = app.oledBlack,
-                            onDarkModeChange = app::applyDarkMode,
-                            onOledBlackChange = app::applyOledBlack,
-                            onOpenLanguageSettings = { app.openAppLocaleSettings(this) },
-                            onOpenAbout = {
-                                startActivity(Intent(this, AboutActivity::class.java))
-                            },
-                            modifier = padding,
-                        )
+                            AppPage.Settings -> SettingsScreen(
+                                darkMode = app.darkMode,
+                                oledBlack = app.oledBlack,
+                                onDarkModeChange = app::applyDarkMode,
+                                onOledBlackChange = app::applyOledBlack,
+                                onOpenLanguageSettings = {
+                                    app.openAppLocaleSettings(this@MainActivity)
+                                },
+                                onOpenAbout = {
+                                    startActivity(
+                                        Intent(this@MainActivity, AboutActivity::class.java),
+                                    )
+                                },
+                            )
+                        }
                     }
                 }
             }

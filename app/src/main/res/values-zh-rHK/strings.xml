@@ -95,8 +95,8 @@
     <string name="about_value_author">anjisuan608</string>
     <string name="about_label_license">授權條款</string>
     <string name="about_value_license">MIT</string>
-    <string name="about_label_repo">GitHub 儲存庫</string>
-    <string name="about_value_repo">github.com/anjisuan608/AI-Freegrip</string>
+    <string name="about_label_repo">儲存庫</string>
+    <string name="about_value_repo">GitHub</string>
 
     <!-- 合規揭露（欄位與措辭抄自官方《SDK 合規使用說明》） -->
     <string name="compliance_title">合規揭露</string>

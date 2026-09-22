@@ -11,8 +11,8 @@
 | 构建 | AGP 9.4.1，Gradle Version Catalog，Java 17 |
 | SDK 范围 | minSdk 34 / targetSdk 37 / compileSdk 37 |
 | SDK | `com.hihonor.mcs:smartgripkit:1.0.0.300` |
-| 版本 | 1.0.1 |
-| 许可证 | MIT |
+<!-- | 版本 | 1.0.1 | -->
+| 许可证 | [MIT](./LICENSE) |
 
 ## 功能
 
@@ -31,7 +31,7 @@ AI FreeGrip 为荣耀 MagicOS 设备能力，非荣耀设备上查询结果为�
 
 支持的具体机型以官方文档为准：
 
-- [支持的设备列表](https://developer.honor.com/cn/docs/aifreegrip)
+- [支持的设备列表](https://developer.honor.com/cn/docs/aifreegrip/guides/support-devices)
 
 ## 构建
 
@@ -113,5 +113,5 @@ app/src/main/res/
 ## 作者
 
 - anjisuan608
-- 仓库：[github.com/anjisuan608/AI-Freegrip](https://github.com/anjisuan608/AI-Freegrip)
-- 许可证：[MIT](https://github.com/anjisuan608/AI-Freegrip/blob/main/LICENSE)
+- 仓库：[GitHub](https://github.com/anjisuan608/AI-FreeGrip)
+- 许可证：[MIT](https://github.com/anjisuan608/AI-FreeGrip/blob/main/LICENSE)

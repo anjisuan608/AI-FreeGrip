@@ -96,8 +96,8 @@
     <string name="about_value_author">anjisuan608</string>
     <string name="about_label_license">许可证</string>
     <string name="about_value_license">MIT</string>
-    <string name="about_label_repo">GitHub 仓库</string>
-    <string name="about_value_repo">github.com/anjisuan608/AI-Freegrip</string>
+    <string name="about_label_repo">仓库</string>
+    <string name="about_value_repo">GitHub</string>
 
     <!-- 合规披露页（字段与措辞抄自官方《SDK 合规使用说明》，见 AGENTS.md 第 3 节） -->
     <string name="compliance_title">合规披露</string>

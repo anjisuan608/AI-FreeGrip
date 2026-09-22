@@ -16,12 +16,15 @@
         android:localeConfig="@xml/locales_config"
         android:theme="@style/Theme.AIFreegrip">
 
-        <!-- 主页 = launcher 入口（singleTask，避免多实例）。
-             预测性返回（Predictive Back）：enableOnBackInvokedCallback 启用
-             OnBackInvokedCallback 分发，返回手势跟手动画由系统提供。
+        <!-- 主活动 = launcher 入口（singleTask，避免多实例）。
+             预测性返回：application 级 enableOnBackInvokedCallback 启用，
+             但按需求主活动显式关闭——MainActivity 走传统 back 分发
+             （BackHandler/finish 均不受影响，无跟手动画）；
+             AboutActivity 未覆盖，继承启用。
              本项是普通 manifest 属性，不属于 <uses-permission>，不触碰合规红线。 -->
         <activity
             android:name=".MainActivity"
+            android:enableOnBackInvokedCallback="false"
             android:exported="true"
             android:label="@string/app_name"
             android:launchMode="singleTask"

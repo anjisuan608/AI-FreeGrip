@@ -95,8 +95,8 @@
     <string name="about_value_author">anjisuan608</string>
     <string name="about_label_license">License</string>
     <string name="about_value_license">MIT</string>
-    <string name="about_label_repo">GitHub repository</string>
-    <string name="about_value_repo">github.com/anjisuan608/AI-Freegrip</string>
+    <string name="about_label_repo">Repository</string>
+    <string name="about_value_repo">GitHub</string>
 
     <!-- Compliance disclosure (fields per the official SDK compliance instructions) -->
     <string name="compliance_title">Compliance disclosure</string>

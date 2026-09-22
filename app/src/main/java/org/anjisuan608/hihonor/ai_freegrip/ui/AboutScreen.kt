@@ -27,11 +27,14 @@ import org.anjisuan608.hihonor.ai_freegrip.ui.theme.oledModuleBorder
 /** 荣耀 AI FreeGrip 官方开发者文档（Introduction 页）。 */
 private const val SDK_DOC_URL = "https://developer.honor.com/cn/docs/aifreegrip/guides/introduction"
 
-/** GitHub 仓库地址（README 视图）。 */
-private const val REPO_URL = "https://github.com/anjisuan608/AI-Freegrip?tab=readme-ov-file"
+/** 仓库主页（大小写敏感：AI-FreeGrip），点击显示为「GitHub」的仓库行跳这里。 */
+private const val REPO_URL = "https://github.com/anjisuan608/AI-FreeGrip"
+
+/** 作者 GitHub 主页，「关于」页 anjisuan608 行点击跳转。 */
+private const val GITHUB_PROFILE_URL = "https://github.com/anjisuan608"
 
 /** MIT 许可证全文。 */
-private const val LICENSE_URL = "https://github.com/anjisuan608/AI-Freegrip/blob/main/LICENSE"
+private const val LICENSE_URL = "https://github.com/anjisuan608/AI-FreeGrip/blob/main/LICENSE"
 
 /** 一条披露字段：label + value 均引用 strings.xml（合规文案集中可审）。 */
 private data class DisclosureField(@param:StringRes val label: Int, @param:StringRes val value: Int)
@@ -128,10 +131,11 @@ fun AboutScreen(modifier: Modifier = Modifier) {
                     modifier = Modifier.padding(14.dp),
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                 ) {
-                    // 作者（纯文本）
+                    // 作者（可点击 → GitHub 主页）
                     LabeledValue(
                         label = stringResource(R.string.about_label_author),
                         value = stringResource(R.string.about_value_author),
+                        onClick = { uriHandler.openUri(GITHUB_PROFILE_URL) },
                     )
                     // 许可证（可点击 → LICENSE 全文）
                     LabeledValue(
