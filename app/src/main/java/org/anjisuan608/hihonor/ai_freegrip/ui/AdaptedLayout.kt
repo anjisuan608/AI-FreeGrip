@@ -6,9 +6,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,10 +18,11 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import org.anjisuan608.hihonor.ai_freegrip.R
 import org.anjisuan608.hihonor.ai_freegrip.grip.GripState
@@ -111,27 +110,72 @@ private fun DemoContentCard() {
 
 /**
  * 操作区排布策略——本演示的核心逻辑，直接对应 AGENTS.md 2.2 的 UI 策略列。
+ *
+ * 两个按钮并排会占满（或超出）整行时改为竖排（第二个按钮在下一行）：
+ * 按钮横跨整行会让靠左/靠右/居中的对齐位移在视觉上看不出来，
+ * en 等长文案下必现；放得下时保持横排原有对齐。
  */
 @Composable
 private fun ActionRow(grip: GripState) {
-    val arrangement: Arrangement.Horizontal = when (grip) {
-        GripState.LeftHand -> Arrangement.spacedBy(12.dp, Alignment.Start)
-        GripState.RightHand -> Arrangement.spacedBy(12.dp, Alignment.End)
-        GripState.BothHands -> Arrangement.SpaceBetween
-        // 未握持与未识别都恢复居中默认布局
-        GripState.NotHeld, GripState.Unknown -> Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally)
-    }
-
-    Row(
+    val gap = 12.dp
+    Layout(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = arrangement,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Button(onClick = {}) {
-            Text(stringResource(R.string.cta_primary))
-        }
-        OutlinedButton(onClick = {}) {
-            Text(stringResource(R.string.cta_secondary))
+        content = {
+            Button(onClick = {}) {
+                Text(stringResource(R.string.cta_primary))
+            }
+            OutlinedButton(onClick = {}) {
+                Text(stringResource(R.string.cta_secondary))
+            }
+        },
+    ) { measurables, constraints ->
+        val gapPx = gap.roundToPx()
+        val maxWidth = constraints.maxWidth
+        // 先量出两个按钮各自的内容宽（单个按钮最多与整行同宽）
+        val primary = measurables[0].measure(Constraints(maxWidth = maxWidth))
+        val secondary = measurables[1].measure(Constraints(maxWidth = maxWidth))
+        val total = primary.width + gapPx + secondary.width
+        // 占满/超出整行 → 竖排；宽度无界（理论上不会发生在 fillMaxWidth 下）→ 横排
+        val stacked = maxWidth != Constraints.Infinity && total >= maxWidth
+
+        if (stacked) {
+            // 竖排：水平对齐跟随握姿；双手/未握持/未识别居中，保持对称的默认观感
+            val x1: Int
+            val x2: Int
+            when (grip) {
+                GripState.LeftHand -> { x1 = 0; x2 = 0 }
+                GripState.RightHand -> {
+                    x1 = maxWidth - primary.width
+                    x2 = maxWidth - secondary.width
+                }
+                GripState.NotHeld, GripState.Unknown, GripState.BothHands -> {
+                    x1 = (maxWidth - primary.width) / 2
+                    x2 = (maxWidth - secondary.width) / 2
+                }
+            }
+            layout(maxWidth, primary.height + gapPx + secondary.height) {
+                primary.place(x1, 0)
+                secondary.place(x2, primary.height + gapPx)
+            }
+        } else {
+            // 横排：与原 Row 相同的对齐策略（靠左/靠右/两端对称/居中）
+            val x1: Int
+            val x2: Int
+            when (grip) {
+                GripState.LeftHand -> { x1 = 0; x2 = primary.width + gapPx }
+                GripState.RightHand -> { x1 = maxWidth - total; x2 = x1 + primary.width + gapPx }
+                GripState.BothHands -> { x1 = 0; x2 = maxWidth - secondary.width }
+                GripState.NotHeld, GripState.Unknown -> {
+                    val start = (maxWidth - total) / 2
+                    x1 = start
+                    x2 = start + primary.width + gapPx
+                }
+            }
+            val height = maxOf(primary.height, secondary.height)
+            layout(maxWidth, height) {
+                primary.place(x1, (height - primary.height) / 2)
+                secondary.place(x2, (height - secondary.height) / 2)
+            }
         }
     }
 }

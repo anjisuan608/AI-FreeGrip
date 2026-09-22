@@ -2,6 +2,8 @@ package org.anjisuan608.hihonor.ai_freegrip.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,7 +15,6 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,6 +33,7 @@ import org.anjisuan608.hihonor.ai_freegrip.ui.theme.AIFreegripTheme
  * - 状态 4 → errorContainer（带「重新检测/重启应用」按钮）
  * - 状态 1 → errorContainer（不可行动的错误，隐藏入口）
  */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun GripStatusCard(
     support: GripSupportStatus,
@@ -59,9 +61,10 @@ fun GripStatusCard(
                 style = MaterialTheme.typography.bodyMedium,
             )
 
-            Row(
+            // FlowRow：en 等长文案下两个胶囊并排放不下时，第二个胶囊换到下一行
+            FlowRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 StatusPill(
                     text = "${stringResource(R.string.label_current_grip)}：" + gripLabel(grip),
