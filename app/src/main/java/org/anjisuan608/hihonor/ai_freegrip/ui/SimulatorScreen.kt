@@ -23,9 +23,9 @@ import org.anjisuan608.hihonor.ai_freegrip.ui.theme.AIFreegripTheme
 /**
  * 模拟页：
  * 1. 演示模拟器模块（[SimulatorCard]）——选择/清除握姿模拟；
- * 2. 预期行为演示区——**跟随模拟器选项**展示当前握姿、预期布局说明
- *    与真实的自适应布局效果（复用主页的 [AdaptedLayout]，保证两页看到的
- *    是同一套布局策略，演示口径一致）。
+ * 2. 演示区——**仅跟随模拟器选项**（未选择时跟随真实传感器）展示当前
+ *    握姿、预期布局说明与自适应布局效果（复用 [AdaptedLayout]，标题为
+ *    「商品详情 · 模拟」；主页的演示区用真实握姿，两页互相解耦）。
  *
  * 顶栏与底部导航由 MainActivity 的外层 Scaffold 统一提供。
  */
@@ -51,15 +51,11 @@ fun SimulatorScreen(
             modifier = Modifier.fillMaxWidth(),
         )
 
-        // 模块二：预期行为演示区（跟随模拟器选项 / 未选择时跟随真实传感器）
+        // 模块二：演示区——仅跟随模拟器选项（未选择时跟随真实传感器）
         Column(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(6.dp),
         ) {
-            Text(
-                text = stringResource(R.string.expected_section_title),
-                style = MaterialTheme.typography.titleMedium,
-            )
             Text(
                 text = "${stringResource(R.string.label_current_grip)}：" + gripLabel(effective),
                 style = MaterialTheme.typography.labelLarge,
@@ -73,6 +69,7 @@ fun SimulatorScreen(
             )
             AdaptedLayout(
                 grip = effective,
+                titleRes = R.string.demo_screen_sim_title,
                 modifier = Modifier.fillMaxWidth(),
             )
         }

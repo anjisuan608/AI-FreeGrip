@@ -37,7 +37,6 @@
     <string name="settings_title">Settings</string>
     <string name="sim_page_title">Demo simulation</string>
     <string name="about_title">About and compliance</string>
-    <string name="expected_section_title">Expected behavior demo</string>
     <string name="action_recheck">Try re-detection</string>
     <string name="action_open_settings">Open settings</string>
     <string name="action_back">Back</string>
@@ -61,7 +60,8 @@
 
     <!-- Demo area (simulated real business UI) -->
     <string name="demo_screen_title">Product detail · Demo</string>
-    <string name="demo_card_title">Recommended content %1$d</string>
+    <string name="demo_screen_sim_title">Product detail · Simulator</string>
+    <string name="demo_card_title">Recommended content</string>
     <string name="demo_card_body">This is simulated business content; the action area below moves left, right, or stays symmetric based on grip.</string>
     <string name="demo_action_label">Action area (adapts to grip)</string>
     <string name="cta_primary">Buy now</string>

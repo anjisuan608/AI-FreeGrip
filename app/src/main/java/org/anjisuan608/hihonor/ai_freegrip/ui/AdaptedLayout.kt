@@ -1,5 +1,6 @@
 package org.anjisuan608.hihonor.ai_freegrip.ui
 
+import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -37,24 +38,26 @@ import org.anjisuan608.hihonor.ai_freegrip.ui.theme.AIFreegripTheme
  * - 双手握持：主/次操作分列两端对称
  *
  * 切换用 250ms 淡入淡出，让「布局跟随握姿」在演示时看得见。
+ *
+ * 标题由调用方决定：主页传「商品详情 · 演示」（默认），模拟页传
+ * 「商品详情 · 模拟」，两页的演示区由此解耦。
  */
 @Composable
 fun AdaptedLayout(
     grip: GripState,
     modifier: Modifier = Modifier,
+    @StringRes titleRes: Int = R.string.demo_screen_title,
 ) {
     Card(modifier = modifier) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = stringResource(R.string.demo_screen_title),
+                text = stringResource(titleRes),
                 style = MaterialTheme.typography.titleMedium,
             )
             Spacer(Modifier.height(12.dp))
 
-            repeat(3) { index ->
-                DemoContentCard(index = index + 1)
-                Spacer(Modifier.height(8.dp))
-            }
+            DemoContentCard()
+            Spacer(Modifier.height(8.dp))
 
             Spacer(Modifier.height(4.dp))
             Text(
@@ -84,7 +87,7 @@ fun AdaptedLayout(
 
 /** 模拟业务内容卡片。 */
 @Composable
-private fun DemoContentCard(index: Int) {
+private fun DemoContentCard() {
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
@@ -92,7 +95,7 @@ private fun DemoContentCard(index: Int) {
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Text(
-                text = stringResource(R.string.demo_card_title, index),
+                text = stringResource(R.string.demo_card_title),
                 style = MaterialTheme.typography.labelLarge,
             )
             Spacer(Modifier.height(4.dp))

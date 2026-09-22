@@ -27,7 +27,8 @@ import org.anjisuan608.hihonor.ai_freegrip.ui.theme.AIFreegripTheme
  * @param support 设备支持状态（错误码 0~4 映射结果）
  * @param grip SDK 回调驱动的真实握姿
  * @param registered 当前是否已注册监听器
- * @param simulatedGrip 模拟器接管时的握姿；null 表示跟随真实传感器
+ * @param simulatedGrip 模拟器接管时的握姿；null 表示跟随真实传感器。
+ *   仅模拟页消费（[effectiveGrip]）；主页只用真实 [grip]，两页演示区互相解耦
  */
 data class GripUiState(
     val support: GripSupportStatus = GripSupportStatus.NotSupported,
@@ -35,13 +36,14 @@ data class GripUiState(
     val registered: Boolean = false,
     val simulatedGrip: GripState? = null,
 ) {
-    /** 实际用于驱动布局的握姿：模拟器优先。 */
+    /** 模拟页演示区的握姿：模拟器选项优先，未选择时跟随真实传感器。 */
     val effectiveGrip: GripState
         get() = simulatedGrip ?: grip
 }
 
 /**
  * 主页：设备支持模块（[GripStatusCard]）+ 演示模块（[AdaptedLayout]）。
+ * 演示区只跟随真实握姿（不消费模拟器选项），与模拟页的演示区互相解耦。
  * 顶栏与底部导航由 MainActivity 的外层 Scaffold 统一提供，本组件只负责内容。
  */
 @Composable
@@ -59,22 +61,23 @@ fun MainScreen(
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        // 设备支持模块
+        // 设备支持模块（当前握姿展示真实传感器值，不受模拟器影响）
         GripStatusCard(
             support = state.support,
-            grip = state.effectiveGrip,
+            grip = state.grip,
             registered = state.registered,
             onRecheck = onRecheck,
             onOpenSettings = onOpenSettings,
             modifier = Modifier.fillMaxWidth(),
         )
 
-        // 演示模块：设备不支持时按官方要求隐藏功能入口
+        // 演示模块（商品详情 · 演示）：只跟随真实握姿，不受模拟器控制；
+        // 设备不支持时按官方要求隐藏功能入口
         if (state.support == GripSupportStatus.NotSupported) {
             HiddenEntry(modifier = Modifier.fillMaxWidth())
         } else {
             AdaptedLayout(
-                grip = state.effectiveGrip,
+                grip = state.grip,
                 modifier = Modifier.fillMaxWidth(),
             )
         }

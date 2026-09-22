@@ -133,7 +133,7 @@ ui/
   MainScreen.kt           # 主页：GripUiState + 设备支持模块 + 演示模块（含 GripUiState 定义）
   GripStatusCard.kt       # 展示当前支持状态/握持状态/错误引导
   AdaptedLayout.kt        # 根据 GripState 重排的演示布局（居中/靠左/靠右/对称）
-  SimulatorScreen.kt      # 模拟页：演示模拟器 + 预期行为演示区（复用 AdaptedLayout）
+  SimulatorScreen.kt      # 模拟页：演示模拟器 + 演示区「商品详情 · 模拟」（仅跟随模拟器，复用 AdaptedLayout）
   SettingsScreen.kt       # 设置页：深色模式三选一对话框 + OLED 纯黑开关 + 应用语言入口 + 关于入口
   AboutScreen.kt          # 关于子页（设置内入口打开）：合规披露 7 字段 + HONOR 开发者链接 + 作者/MIT/仓库
   theme/DarkMode.kt       # 深色三态枚举：System/Light/Dark（SharedPreferences 持久化，脏数据回退 System）

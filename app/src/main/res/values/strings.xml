@@ -38,7 +38,6 @@
     <string name="settings_title">设置</string>
     <string name="sim_page_title">演示模拟</string>
     <string name="about_title">关于与合规</string>
-    <string name="expected_section_title">预期行为演示区</string>
     <string name="action_recheck">尝试重新检测</string>
     <string name="action_open_settings">打开设置</string>
     <string name="action_back">返回</string>
@@ -62,7 +61,8 @@
 
     <!-- 演示区（模拟真实业务界面） -->
     <string name="demo_screen_title">商品详情 · 演示</string>
-    <string name="demo_card_title">推荐内容 %1$d</string>
+    <string name="demo_screen_sim_title">商品详情 · 模拟</string>
+    <string name="demo_card_title">推荐内容</string>
     <string name="demo_card_body">这一段是模拟的真实业务内容；下方操作区会根据握姿自动靠左、靠右或对称排布。</string>
     <string name="demo_action_label">操作区（随握姿自适应）</string>
     <string name="cta_primary">立即下单</string>
