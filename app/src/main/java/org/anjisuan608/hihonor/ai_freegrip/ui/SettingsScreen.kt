@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,12 +17,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.materialIcon
 import androidx.compose.material.icons.materialPath
 import androidx.compose.material3.Card
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,7 +34,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntRect
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupPositionProvider
+import androidx.compose.ui.window.PopupProperties
 import org.anjisuan608.hihonor.ai_freegrip.R
 import org.anjisuan608.hihonor.ai_freegrip.ui.theme.AIFreegripTheme
 import org.anjisuan608.hihonor.ai_freegrip.ui.theme.DarkMode
@@ -75,6 +83,27 @@ private val UnfoldMore = materialIcon(name = "Filled.UnfoldMore") {
  *
  * 设置值由 MainActivity 持有并持久化，本组件只负责展示与回调。
  */
+/**
+ * 主题菜单定位器：菜单**右缘对齐触发行右缘**（即显示当前模式的行右端），
+ * DropdownMenu 默认左缘对齐且无对齐参数可改，故自定义 PopupPositionProvider。
+ * 水平 clamp 进窗口；垂直优先锚点正下方，放不下再翻到锚点上方，与系统菜单惯例一致。
+ */
+private class EndAlignedMenuPositionProvider : PopupPositionProvider {
+    override fun calculatePosition(
+        anchorBounds: IntRect,
+        windowSize: IntSize,
+        layoutDirection: LayoutDirection,
+        popupContentSize: IntSize,
+    ): IntOffset {
+        val x = (anchorBounds.right - popupContentSize.width)
+            .coerceIn(0, maxOf(0, windowSize.width - popupContentSize.width))
+        val y = anchorBounds.bottom
+            .takeIf { it + popupContentSize.height <= windowSize.height }
+            ?: (anchorBounds.top - popupContentSize.height).coerceAtLeast(0)
+        return IntOffset(x, y)
+    }
+}
+
 @Composable
 fun SettingsScreen(
     darkMode: DarkMode,
@@ -99,7 +128,7 @@ fun SettingsScreen(
         SectionTitle(stringResource(R.string.settings_section_display))
         Card(modifier = Modifier.fillMaxWidth(), border = oledModuleBorder()) {
             Column {
-                // 主题模式：点行展开下拉菜单（当前值 + 箭头，选中项带勾）
+                // 主题模式：点行展开下拉菜单（当前值 + 箭头在行右端，菜单贴其右下方展开）
                 Box {
                     Row(
                         modifier = Modifier
@@ -124,23 +153,44 @@ fun SettingsScreen(
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
-                    DropdownMenu(
-                        expanded = themeMenuExpanded,
-                        onDismissRequest = { themeMenuExpanded = false },
-                    ) {
-                        DarkMode.entries.forEach { mode ->
-                            DropdownMenuItem(
-                                text = {
-                                    Text(
-                                        text = stringResource(mode.labelRes),
-                                        style = MaterialTheme.typography.bodyLarge,
-                                    )
-                                },
-                                onClick = {
-                                    onDarkModeChange(mode)
-                                    themeMenuExpanded = false
-                                },
-                            )
+                    // DropdownMenu 锚定行左缘且无对齐参数；改自定义 Popup——
+                    // 菜单右缘对齐「当前值▾」的行右端、顶部贴行底缘正下方展开。
+                    // Surface 必须收窄到内容宽：DropdownMenuItem 自带
+                    // fillMaxWidth()，不收窄会把菜单撑满整个窗口宽度
+                    if (themeMenuExpanded) {
+                        Popup(
+                            onDismissRequest = { themeMenuExpanded = false },
+                            popupPositionProvider = EndAlignedMenuPositionProvider(),
+                            properties = PopupProperties(
+                                focusable = true,
+                                dismissOnBackPress = true,
+                                dismissOnClickOutside = true,
+                            ),
+                        ) {
+                            Surface(
+                                modifier = Modifier.width(IntrinsicSize.Min),
+                                shape = MaterialTheme.shapes.small,
+                                tonalElevation = 3.dp,
+                            ) {
+                                Column(
+                                    Modifier.verticalScroll(rememberScrollState()),
+                                ) {
+                                    DarkMode.entries.forEach { mode ->
+                                        DropdownMenuItem(
+                                            text = {
+                                                Text(
+                                                    text = stringResource(mode.labelRes),
+                                                    style = MaterialTheme.typography.bodyLarge,
+                                                )
+                                            },
+                                            onClick = {
+                                                onDarkModeChange(mode)
+                                                themeMenuExpanded = false
+                                            },
+                                        )
+                                    }
+                                }
+                            }
                         }
                     }
                 }
