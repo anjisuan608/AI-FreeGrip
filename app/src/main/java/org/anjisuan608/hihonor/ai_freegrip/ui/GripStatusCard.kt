@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -77,8 +76,12 @@ fun GripStatusCard(
             }
 
             if (support.retryable) {
-                // AGENTS.md：状态 2、3 提供「尝试重新检测」按钮
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                // AGENTS.md：状态 2、3 提供「尝试重新检测」按钮；
+                // FlowRow：部分语言/字体放大下并排放不下时第二个按钮换行
+                FlowRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
                     Button(onClick = onRecheck) {
                         Text(stringResource(R.string.action_recheck))
                     }
@@ -89,8 +92,12 @@ fun GripStatusCard(
             }
 
             if (support == GripSupportStatus.OtherError) {
-                // 状态 4：提供自救手段——先重试查询/注册，仍失败则重启应用
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                // 状态 4：提供自救手段——先重试查询/注册，仍失败则重启应用；
+                // FlowRow：同上，放不下时第二个按钮换行
+                FlowRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
                     Button(onClick = onRecheck) {
                         Text(stringResource(R.string.action_recheck))
                     }
