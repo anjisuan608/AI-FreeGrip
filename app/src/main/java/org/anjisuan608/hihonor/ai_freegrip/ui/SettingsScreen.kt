@@ -156,7 +156,10 @@ fun SettingsScreen(
                     // DropdownMenu 锚定行左缘且无对齐参数；改自定义 Popup——
                     // 菜单右缘对齐「当前值▾」的行右端、顶部贴行底缘正下方展开。
                     // Surface 必须收窄到内容宽：DropdownMenuItem 自带
-                    // fillMaxWidth()，不收窄会把菜单撑满整个窗口宽度
+                    // fillMaxWidth()，裸 Popup 下会撑满整个窗口宽度。
+                    // 用 IntrinsicSize.Max = 最长选项的单行完整宽（含内边距），
+                    // 随语言字符长度自适应；Min 是「可换行最小宽」（≈最长单词），
+                    // 会把 en 等长文案挤窄换行，不能用
                     if (themeMenuExpanded) {
                         Popup(
                             onDismissRequest = { themeMenuExpanded = false },
@@ -168,7 +171,7 @@ fun SettingsScreen(
                             ),
                         ) {
                             Surface(
-                                modifier = Modifier.width(IntrinsicSize.Min),
+                                modifier = Modifier.width(IntrinsicSize.Max),
                                 shape = MaterialTheme.shapes.small,
                                 tonalElevation = 3.dp,
                             ) {
